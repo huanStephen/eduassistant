@@ -1,0 +1,198 @@
+/* pages/user/user.wxss */
+page{
+  height: 100%;
+}
+
+.container{
+   height: 100%;
+   background: #F5F5F5;
+}
+.user-logo{
+   background: #fff;
+}
+.user-logo-img {
+    padding: 25rpx 0rpx;
+    height: 130rpx;
+    width: 150rpx;
+    position: relative;
+    left: 300rpx;
+}
+/* 共享view样式*/
+.userstyle {
+  padding: 25rpx 40rpx;
+  background: #fff;
+  border-width: 0rpx 0rpx 1rpx 0rpx;
+  border-style: solid;
+  border-color: #F5F5F5;
+  display: flex;
+  align-items: center;
+
+}
+/* 共享view里面的text样式*/
+.outlineTitle {
+  color: #4a4a4a;
+  font-size: 26rpx;
+  font-weight: bold;
+  line-height: 1.42857;
+  flex: 1;
+}
+
+.outlineDetail {
+  color: #4a4a4a;
+  font-size: 26rpx;
+  line-height: 1.42857;
+  flex: 3;
+}
+
+.user-maixiangMember {
+  border-width: 17rpx 0rpx 10rpx 0rpx;
+  border-style: solid;
+  border-color: #EFEFF5;
+  display: flex;
+  align-items: center;
+}
+.user-tongleMember {
+  border-width: 0rpx 0rpx 17rpx 0rpx;
+  border-top: none;
+  border-style: solid;
+  border-color: #EFEFF5;
+  display: flex;
+  align-items: center;
+}
+
+.btn-box {
+  margin-top: 20rpx;
+  padding: 9rpx 5rpx;
+  font-size: 30rpx;
+  font-weight: 400;
+  background-color: #ffc324;
+  color: white;
+  border-radius: 10rpx;
+}
+
+.post-userList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #6c6c6c;
+  font-size: 26rpx;
+}
+
+/*logo设置css*/
+.userlogo {
+  padding: 40rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.userlogo-img {
+  margin-bottom: 20rpx;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+}
+
+/*下部分四个输入框*/
+.userdata {
+  margin: 10rpx 0rpx;
+  border: 1rpx solid #6c6c6c;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  border-radius: 10rpx;
+  align-items: center;
+
+}
+.userdata-name {
+  padding: 30rpx 30rpx;
+}
+/*第一个箭头*/
+.userdata-symbol:after {
+  content: "";
+  display: inline-block;
+  width: 40rpx;
+  height: 40rpx;
+  margin: 15rpx 0rpx 10rpx 0rpx;
+  border-left: 1rpx solid #6c6c6c;
+}
+/*后面三个箭头*/
+.userdata-input {
+  width: 300rpx;
+}
+
+.righthead:after {
+  content: '';
+  /*即不把兄弟挤下去 又能设置自己的style  inline不能设置大小 block会挤下去 所以有了inline-block*/
+  display: inline-block;
+  width: 18rpx;
+  height: 18rpx;
+  border: 3rpx solid #A9A9A9;
+  border-bottom: none;
+  border-left: none;
+  transform: rotate(45deg);
+  margin-left: 160rpx;
+}
+/*保存按键*/
+.userbutton {
+  margin-top: 40rpx;
+  font-size: 32rpx;
+  padding: 7rpx 0rpx;
+  width: 90%;
+
+  color: white;
+}
+
+.touch-item {
+  display: flex;
+  justify-content: space-between;
+  /* border-bottom: 1rpx solid #ccc; */
+  width: 100%;
+  overflow: hidden;
+}
+ 
+.content {
+  width: 100%;
+  line-height: 50rpx;
+  margin-right: 0;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+  -webkit-transform: translateX(180rpx);
+  transform: translateX(180rpx);
+  margin-left: -180rpx;
+}
+ 
+.del {
+  background-color: orangered;
+  width: 180rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  -webkit-transform: translateX(180rpx);
+  transform: translateX(180rpx);
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+}
+ 
+.touch-move-active .content, .touch-move-active .del {
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+ 
+.row {
+  display: flex;
+  flex-direction: row;
+}
+ 
+.column {
+  display: flex;
+  flex-direction: column;
+}
+ 
+.full_width {
+  width: 100%;
+}

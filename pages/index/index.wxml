@@ -1,0 +1,61 @@
+<!--index.wxml-->
+<!-- <view class="cards">
+  <image class="cardImg" src="/images/card.png" />
+  <view class="cardText1">麦有礼</view>
+  <view class="cardText2">红包新玩法，限时5元起</view>
+</view> -->
+<swiper class="swiper" indicator-dots="true"
+  autoPlay="false"  indicator-color="#a8a8ac"
+  indicator-active-color="#ffc324">
+  <block wx:for="{{imgs}}" wx:key="" class="block" >
+    <swiper-item >
+        <navigator url="/pages/integraldetail/integraldetail?url={{item.url}}&description={{item.description}}&prompt={{item.prompt}}">
+            <image  src="{{item.url}}" class="side-img" />
+            <!-- <view class="check click">查看详情</view> -->
+        </navigator>
+
+        <!-- <view class="exchange click" bindtap="exchangetap">立即兑换</view> -->
+    </swiper-item>
+
+  </block>
+</swiper>
+<view class="line"></view>
+
+<view class="index-block"  >
+  <view bindtap="bindSubject" class="index-item">
+    <view class="indexflex">
+      <image class="index-item-img" src="/images/index_wallet.png"/>
+      <view class="index-item-name">科 目</view>
+    </view>
+  </view>
+  <view bindtap="bindClass" class="index-item" >
+    <view class="indexflex">
+      <image class="index-item-img" src="/images/index_tag.png"/>
+      <view class="index-item-name">班 级</view>
+    </view>
+  </view>
+  <view bindtap="bindQuestion" class="index-item">
+    <view class="indexflex">
+      <image class="index-item-img" src="/images/index_smile.png"/>
+      <text class="index-item-name">试 题</text>
+    </view>
+  </view>
+  <view bindtap="bindDemo" class="index-item">
+    <view class="indexflex">
+      <image class="index-item-img" src="/images/index_smile.png"/>
+      <text class="index-item-name">试 卷</text>
+    </view>
+  </view>
+  <view class="index-item">
+    <view class="indexflex">
+      <!-- <image class="index-item-img" src="/images/index_clown.png"/>
+      <text class="index-item-name"></text> -->
+    </view>
+  </view>
+  <view class="index-item">
+     <view class="indexflex">
+       <!-- <image class="index-item-img" src="/images/index_gift.png"/>
+       <text class="index-item-name"></text> -->
+     </view>
+  </view>
+</view>

@@ -1,0 +1,51 @@
+<view class="tabTit box">
+  <view class="flex1{{!tab[index]?' active':''}}" wx:for="{{tabTxt}}" wx:key="type" data-index="{{index}}" bindtap="filterTab">
+    <text>{{item}}</text>
+    <image src="/images/arrow.png"></image>
+  </view>
+</view>
+
+<!--筛选项-->
+<view class="tabLayer" hidden="{{tab[0]}}">
+    <text class="{{subject_id==item.id?'active':''}}" wx:for="{{subjectList}}" wx:key="pp" wx:for-item="item" data-id="{{item.id}}" data-index="0" data-txt="{{item.title}}" bindtap="filter">{{item.title}}</text>
+</view>
+<view class="tabLayer" hidden="{{tab[1]}}">
+    <text class="{{chapter_id==item.id?'active':''}}" wx:for="{{chapterList}}" wx:key="pp" wx:for-item="item" data-id="{{item.id}}" data-index="1" data-txt="{{item.title}}" bindtap="filter">{{item.title}}</text>
+</view>
+<view class="tabLayer" hidden="{{tab[2]}}">
+    <text class="{{outline_id==item.id?'active':''}}" wx:for="{{outlineList}}" wx:key="pp" wx:for-item="item" data-id="{{item.id}}" data-index="2" data-txt="{{item.title}}" bindtap="filter">{{item.title}}</text>
+</view>
+
+<view class="container">
+  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{questionList}}" wx:key="" data-id="{{item.id}}" data-sort="{{item.sort}}" data-name="{{item.name}}" data-description="{{item.description}}" bindlongpress="openUpdateWin">
+    <view class='content'>
+      <view class='column user-commonProblem userstyle'>
+        <view class='row full_width'>
+          <text class="outlineTitle">{{item.name}}</text>
+          <text class="outlineDetail">{{item.description}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="del" catchtap="del" data-id="{{item.id}}">删除</view>
+  </view>
+
+  <!-- <button class="btn-box" type="button" bindtap="openAddWin">添加试题</button> -->
+
+  <!-- 弹窗 -->
+  <modal title="{{modalStatusTxt}}大纲" confirm-text="{{modalStatusTxt}}" cancel-text="取消"
+   hidden="{{modalHidden}}" bindconfirm="confirmChange" bindcancel="cancellChange" >
+    <view class="post-userList">
+        <view class="userdata">
+          <view class="userdata-name">名称</view>
+          <view class="userdata-symbol"></view>
+          <input class="userdata-input" type="text" bindinput="bindName" value="{{name}}" placeholder="请输入名称" />
+        </view>
+        <view class="userdata">
+          <view class="userdata-name">描述</view>
+          <view class="userdata-symbol"></view>
+          <input class="userdata-input" type="text" bindinput="bindDescription" value="{{description}}" placeholder="请输入描述" />
+        </view>
+    </view>
+  </modal>
+
+</view>
