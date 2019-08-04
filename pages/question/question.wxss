@@ -6,6 +6,7 @@ page{
 .container{
    height: 100%;
    background: #F5F5F5;
+   margin-top: 90rpx;
 }
 .user-logo{
    background: #fff;
@@ -29,19 +30,26 @@ page{
 
 }
 /* 共享view里面的text样式*/
-.outlineTitle {
+.userTextStyle {
   color: #4a4a4a;
   font-size: 26rpx;
-  font-weight: bold;
   line-height: 1.42857;
   flex: 1;
 }
+/* 共享右箭头设置*/
+.righthead:after{
 
-.outlineDetail {
-  color: #4a4a4a;
-  font-size: 26rpx;
-  line-height: 1.42857;
-  flex: 3;
+  content: '';
+  /*即不把兄弟挤下去 又能设置自己的style  inline不能设置大小 block会挤下去 所以有了inline-block*/
+  display: inline-block;
+  width: 18rpx;
+  height: 18rpx;
+  border: 3rpx solid #A3A3A3;
+  border-bottom: none;
+  border-left: none;
+  transform: rotate(45deg);
+  margin-top: -8rpx;
+
 }
 
 .user-maixiangMember {
@@ -197,6 +205,7 @@ page{
   width: 100%;
 }
 
+/* 筛选框样式 */
 .clear{
   clear: both;
   overflow: hidden;
@@ -323,11 +332,8 @@ navigator{
   margin-left:10px;
   font-size:15px;
 }
-/* pages/list/list.wxss */
-.container{
-  padding: 0;
-  margin-top: 91rpx;
-}
+
+/* 展开样式 */
 .xiangqing{
   display: flex;
   flex-wrap:wrap;
@@ -428,4 +434,93 @@ color: #A8A8A8
   float: left;
   color: #F56D03;
   font-size: 32rpx;
+}
+
+.list_name_box{
+  background: #fff;
+  border-top: 1px solid #efefef;
+  display: flex;
+  height: 90rpx;
+  align-items: center;
+  padding: 0 25rpx;
+  font-size: 32rpx;
+}
+.list_item_name{
+  flex: 1;
+}
+.icon_down{
+  width: 35rpx;
+  height:35rpx;
+  transition:transform  0.3s;
+}
+.list_item_name_box{
+  background: #fff;
+  font-size: 30rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 25rpx 0 50rpx;
+}
+.other{
+  display: flex;
+  height: 80rpx;
+  padding: 0 25rpx 0 50rpx;
+  align-items: center;
+  font-size: 30rpx;
+  color: #666;
+}
+.icon_down_rotate{
+  transform:rotate(180deg);
+}
+
+.filter_open_arrow{
+  content: '';
+  /*即不把兄弟挤下去 又能设置自己的style  inline不能设置大小 block会挤下去 所以有了inline-block*/
+  display: inline-block;
+  width: 14rpx;
+  height: 14rpx;
+  border: 2rpx solid #A3A3A3;
+  border-bottom: none;
+  border-right: none;
+  transform: rotate(45deg);
+  margin-bottom: 6rpx;
+}
+
+.filter_close_arrow{
+  content: '';
+  /*即不把兄弟挤下去 又能设置自己的style  inline不能设置大小 block会挤下去 所以有了inline-block*/
+  display: inline-block;
+  width: 14rpx;
+  height: 14rpx;
+  border: 2rpx solid #A3A3A3;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+  margin-bottom: 10rpx;
+}
+
+.list_open_arrow{
+  content: '';
+  /*即不把兄弟挤下去 又能设置自己的style  inline不能设置大小 block会挤下去 所以有了inline-block*/
+  display: inline-block;
+  width: 14rpx;
+  height: 14rpx;
+  border: 2rpx solid #A3A3A3;
+  border-bottom: none;
+  border-right: none;
+  transform: rotate(45deg);
+  margin-top: 10rpx;
+}
+
+.list_close_arrow{
+  content: '';
+  /*即不把兄弟挤下去 又能设置自己的style  inline不能设置大小 block会挤下去 所以有了inline-block*/
+  display: inline-block;
+  width: 14rpx;
+  height: 14rpx;
+  border: 2rpx solid #A3A3A3;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+  margin-top: 6rpx;
 }

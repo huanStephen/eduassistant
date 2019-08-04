@@ -1,13 +1,13 @@
 <view class="tabTit box">
   <view class="flex1{{!tab[index]?' active':''}}" wx:for="{{tabTxt}}" wx:key="type" data-index="{{index}}" bindtap="filterTab">
-    <text>{{item}}</text>
-    <image src="/images/arrow.png"></image>
+    <text style="margin-right: 10rpx;">{{item}}</text>
+    <view class="{{!tab[index]?' filter_open_arrow':'filter_close_arrow'}}"></view>
   </view>
 </view>
-
 <!--筛选项-->
 <view class="tabLayer" hidden="{{tab[0]}}">
-    <text class="{{subject_id==item.id?'active':''}}" wx:for="{{subjectList}}" wx:key="pp" wx:for-item="item" data-id="{{item.id}}" data-index="0" data-txt="{{item.title}}" bindtap="filter">{{item.title}}</text>
+  <text class="{{subject_id==0?'active':''}}" data-id="0" data-index="0" data-txt="未分类" bindtap="filter">未分类</text>
+  <text class="{{subject_id==item.id?'active':''}}" wx:for="{{subjectList}}" wx:key="pp" data-id="{{item.id}}" data-index="0" data-txt="{{item.title}}" bindtap="filter">{{item.title}}    </text>
 </view>
 <view class="tabLayer" hidden="{{tab[1]}}">
     <text class="{{chapter_id==item.id?'active':''}}" wx:for="{{chapterList}}" wx:key="pp" wx:for-item="item" data-id="{{item.id}}" data-index="1" data-txt="{{item.title}}" bindtap="filter">{{item.title}}</text>
@@ -17,22 +17,27 @@
 </view>
 
 <view class="container">
-  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{questionList}}" wx:key="" data-id="{{item.id}}" data-sort="{{item.sort}}" data-name="{{item.name}}" data-description="{{item.description}}" bindlongpress="openUpdateWin">
+  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{questionList}}" wx:key="" data-id="{{item.id}}" bindlongpress="openUpdateWin">
     <view class='content'>
-      <view class='column user-commonProblem userstyle'>
+      <view class='column user-commonProblem userstyle' catchtap="listTap" data-index="{{index}}">
         <view class='row full_width'>
-          <text class="outlineTitle">{{item.name}}</text>
-          <text class="outlineDetail">{{item.description}}</text>
+          <text class="userTextStyle">{{item.title}}</text>
+          <view class="{{item.show?' list_open_arrow':'list_close_arrow'}}"></view>
+        </view>
+      </view>
+      <view wx:if='{{item.show}}'>
+        <view wx:for='{{item.answers}}' wx:for-item="childrenItem" wx:key='this'>
+          <view class='list_item_name_box'>
+            <text class='list_item_name userTextStyle'>{{childrenItem.item}}</text>
+          </view>
         </view>
       </view>
     </view>
     <view class="del" catchtap="del" data-id="{{item.id}}">删除</view>
   </view>
 
-  <!-- <button class="btn-box" type="button" bindtap="openAddWin">添加试题</button> -->
-
   <!-- 弹窗 -->
-  <modal title="{{modalStatusTxt}}大纲" confirm-text="{{modalStatusTxt}}" cancel-text="取消"
+  <modal title="更新试题" confirm-text="更新" cancel-text="取消"
    hidden="{{modalHidden}}" bindconfirm="confirmChange" bindcancel="cancellChange" >
     <view class="post-userList">
         <view class="userdata">

@@ -8,6 +8,7 @@ Page({
   data: {
     tabTxt: ['科目', '章节', '大纲'],//分类
     tab: [true, true, true],
+    questionList: [],
     subjectList: [],
     chapterList: [],
     outlineList: [],
@@ -15,8 +16,6 @@ Page({
     questionList: [],
     ifName: false,
     modalHidden: true,
-    modalStatusTxt: '',
-    modalStatus: 0,
     id: 0,
     sort: 0,
     name: '',
@@ -24,62 +23,31 @@ Page({
   },
 
   /**
-   * 添加试题
-   */
-  openAddWin: function() {
-    this.setData({ modalHidden: false, modalStatusTxt: '添加', modalStatus: 1});
-  },
-  
-  /**
    * 添加/更新大纲
    */
   confirmChange: function () {
     var subData = {
-      id: null,
+      id: this.data.id,
       name: this.data.name,
       description: this.data.description,
-      sort: null
+      sort: this.data.sort
     }
-    // 添加的情况
-    if (1 == this.data.modalStatus) {
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function(res) {
-      //     if (1 == res.result) {
+    // wx.request({
+    //   url: '',
+    //   data: subData,
+    //   method: 'POST',
+    //   header: {
+    //     'content-type': 'application/x-www-form-urlencoded'
+    //   },
+    //   success: function (res) {
+    //     if (1 == res.result) {
 
-      //       that.init();
-      //     } else {
+    //       that.init();
+    //     } else {
 
-      //     }
-      //   }
-      // });
-    } 
-    // 更新的情况
-    else if (2 == this.data.modalStatus) {
-      subData.id = this.data.id;
-      subData.sort = this.data.sort;
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.init();
-      //     } else {
-
-      //     }
-      //   }
-      // });
-    }
+    //     }
+    //   }
+    // });
 
     this.setData({
       modalHidden: true
@@ -97,23 +65,23 @@ Page({
     this.cleanModal();
   },
 
-  bindName: function(el) {
-    this.setData({ name: el.detail.value})
+  bindName: function (el) {
+    this.setData({ name: el.detail.value })
   },
 
   bindDescription: function (el) {
-    this.setData({ description: el.detail.value})
+    this.setData({ description: el.detail.value })
   },
 
-  cleanModal: function() {
-    this.setData({ name: '', description: ''})
+  cleanModal: function () {
+    this.setData({ name: '', description: '' })
   },
 
   /**
    * 更新试题
    */
   openUpdateWin: function (el) {
-    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, sort: el.currentTarget.dataset.sort, name: el.currentTarget.dataset.name, description: el.currentTarget.dataset.description});
+    this.setData({ modalHidden: false, id: el.currentTarget.dataset.id, sort: el.currentTarget.dataset.sort, name: el.currentTarget.dataset.name, description: el.currentTarget.dataset.description });
   },
 
   /**
@@ -121,14 +89,14 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    this.setData({ subjectList: [{ 'id': '1', 'title': '七年级英语' }, { 'id': '2', 'title': '八年级英语' }, { 'id': '3', 'title': '九年级英语' }, { 'id': '4', 'title': '高一英语' }, { 'id': '5', 'title': '高二英语' }, { 'id': '6', 'title': '高三英语' }], chapterList: [{ 'id': '1', 'title': '第一章' }, { 'id': '2', 'title': '第二章' }, { 'id': '3', 'title': '第三章' }, { 'id': '4', 'title': '第四章' }, { 'id': '5', 'title': '第五章' }, { 'id': '6', 'title': '第六章' }], outlineList: [{ 'id': '1', 'title': '第一节' }, { 'id': '2', 'title': '第二节' }, { 'id': '3', 'title': '第三节' }, { 'id': '4', 'title': '第四节' }, { 'id': '5', 'title': '第五节' }, { 'id': '6', 'title': '第六节' }]}); 
+    this.setData({ questionList: [{ id: 1, title: "第一题", answers: [{ item: '第一题答案1' }, { item: '第一题答案2' }, { item: '第一题答案3' }, { item: '第一题答案4' }] }, { id: 2, title: "第二题", answers: [{ item: '第二题答案1' }, { item: '第二题答案2' }, { item: '第二题答案3' }, { item: '第二题答案4' }] }, { id: 3, title: "第三题", answers: [{ item: '第三题答案1' }, { item: '第三题答案2' }, { item: '第三题答案3' }, { item: '第三题答案4' }] }, { id: 4, title: "第四题", answers: [{ item: '第四题答案1' }, { item: '第四题答案2' }, { item: '第四题答案3' }, { item: '第四题答案4' }] }, { id: 5, title: "第五题", answers: [{ item: '第五题答案1' }, { item: '第五题答案2' }, { item: '第五题答案3' }, { item: '第五题答案4' }] }, { id: 6, title: "第六题", answers: [{ item: '第六题答案1' }, { item: '第六题答案2' }, { item: '第六题答案3' }, { item: '第六题答案4' }] }], subjectList: [{ 'id': '1', 'title': '七年级英语' }, { 'id': '2', 'title': '八年级英语' }, { 'id': '3', 'title': '九年级英语' }, { 'id': '4', 'title': '高一英语' }, { 'id': '5', 'title': '高二英语' }, { 'id': '6', 'title': '高三英语' }], chapterList: [{ 'id': '1', 'title': '第一章' }, { 'id': '2', 'title': '第二章' }, { 'id': '3', 'title': '第三章' }, { 'id': '4', 'title': '第四章' }, { 'id': '5', 'title': '第五章' }, { 'id': '6', 'title': '第六章' }], outlineList: [{ 'id': '1', 'title': '第一节' }, { 'id': '2', 'title': '第二节' }, { 'id': '3', 'title': '第三节' }, { 'id': '4', 'title': '第四节' }, { 'id': '5', 'title': '第五节' }, { 'id': '6', 'title': '第六节' }] });
     this.init();
   },
 
   /**
    * 初始化数据
    */
-  init: function() {
+  init: function () {
     // wx.request({
     //   url: '',
     //   header: {
@@ -165,30 +133,30 @@ Page({
   /**
    * 删除试题
    */
-  del: function(el) {
+  del: function (el) {
     wx.showModal({
       title: '提示',
       content: '确认要删除试题信息么？',
       success: function (res) {
         console.log(el.currentTarget.dataset.id);
         // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
+        //   url: '',
+        //   data: subData,
+        //   method: 'POST',
+        //   header: {
+        //     'content-type': 'application/x-www-form-urlencoded'
+        //   },
+        //   success: function (res) {
+        //     if (1 == res.result) {
 
-      //       that.init();
-      //     } else {
+        //       that.init();
+        //     } else {
 
-      //     }
-      //   }
-      // });
+        //     }
+        //   }
+        // });
       }
-    }); 
+    });
   },
 
   // 选项卡
@@ -233,6 +201,31 @@ Page({
     }
     //数据筛选
     self.getDataList();
+  },
+
+  getDataList: function () {
+
+  },
+
+  //点击最外层列表展开收起
+  listTap(e) {
+    let idx = e.currentTarget.dataset.index,//获取点击的下标值
+      list = this.data.questionList;
+    list[idx].show = !list[idx].show;//变换其打开、关闭的状态
+    if (list[idx].show) {//如果点击后是展开状态，则让其他已经展开的列表变为收起状态
+      this.packUp(list, idx);
+    }
+
+    this.setData({questionList: list});
+  },
+
+  //让所有的展开项，都变为收起
+  packUp(data, index) {
+    for (let i = 0, len = data.length; i < len; i++) {//其他最外层列表变为关闭状态
+      if (index != i) {
+        data[i].show = false;
+      }
+    }
   },
 
   /**
