@@ -15,7 +15,9 @@ Page({
     id: 0,
     sort: 0,
     name: '',
-    description: ''
+    description: '',
+    currPage: 1,
+    pageSize: 10
   },
 
   /**
@@ -130,21 +132,31 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    this.setData({ subjectList: [{ id: 1, name: "七年级英语", sort: 1, description: '' }, { id: 2, name: "八年级英语", sort: 2, description: '' }, { id: 3, name: "九年级英语", sort: 3, description: '' }, { id: 4, name: "高一英语", sort: 4, description: '' }, { id: 5, name: "高二英语", sort: 5, description: '' }, { id: 6, name: "高三英语", sort: 6, description: '' }] });
-    // wx.request({
-    //   url: '',
-    //   header: {
-    //     'content-type': 'application/json'
-    //   },
-    //   success: function (res) {
-    //     if (1 == res.result) {
-          
-    //       that.setData({subjectList: res.list});
-    //     } else {
+    this.init();
+  },
 
-    //     }
-    //   }
-    // });
+  /**
+   * 初始化加载数据
+   */
+  init: function() {
+    wx.request({
+      url: 'http://localhost:8080/wx/subject/getSubjects?currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          that.setData({ subjectList: result.data.list });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   //手指触摸动作开始 记录起点X坐标
@@ -240,7 +252,27 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    var page = this.data.currPage + 1;
+    var arr = this.data.subjectList;
+    wx.request({
+      url: 'http://localhost:8080/wx/subject/getSubjects?currPage=' + page + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          arr = arr.concat(result.data.list);
+          that.setData({ subjectList: arr, currPage: page });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   /**

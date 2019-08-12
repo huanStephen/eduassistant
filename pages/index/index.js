@@ -39,6 +39,11 @@ Page({
       url: '../question/question'
     })
   },
+  bindExamPaper: function () {
+    wx.navigateTo({
+      url: '../exampaper/exampaper'
+    })
+  },
 
   bindDemo: function() {
     wx.navigateTo({
@@ -57,15 +62,16 @@ Page({
     //   })
     // })
     var that = this;
-    wx.request({
-      url:"https://www.easy-mock.com/mock/595f3f139adc231f357b0615/McDonald/list",
-      method: 'GET',
-      success: function(res) {
-        that.setData({
-          userList: res.data.data,
-          imgs: res.data.image
-        })
-      }
-    });
+    // wx.request({
+    //   url:"https://www.easy-mock.com/mock/595f3f139adc231f357b0615/McDonald/list",
+    //   method: 'GET',
+    //   success: function(res) {
+    //     that.setData({
+    //       userList: res.data.data,
+    //       imgs: res.data.image
+    //     })
+    //   }
+    // });
+    this.setData({ imgs: [{ url: '/images/1coupon_one.png' }, { url: '/images/1coupon_two.png' }, { url: '/images/1coupon_three.png' }]})
   }
 })

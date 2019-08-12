@@ -16,12 +16,17 @@
     "pages/class/class",
     "pages/student/student",
     "pages/question/question",
+    "pages/exampaper/exampaper",
+    "pages/examquestion/examquestion",
+    "pages/examquestionchoose/examquestionchoose",
+    "pages/questionmapping/questionmapping",
+    "pages/studentdetail/studentdetail",
     "pages/demo/demo"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#000",
-    "navigationBarTitleText": "i麦当劳",
+    "navigationBarTitleText": "教学小助手",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
@@ -40,7 +45,7 @@
         "pagePath": "pages/qrcode/qrcode",
         "iconPath": "images/icon_qrcode.png",
         "selectedIconPath": "images/icon_qrcode_HL.png",
-        "text": "我的二维码"
+        "text": "资讯/活动"
       },
       {
         "pagePath": "pages/user/user",

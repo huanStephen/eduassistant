@@ -1,131 +1,111 @@
-// index/list.js
+var address = require("mock.js")
 Page({
+  /**
+  * 控件当前显示的数据
+  * provinces:所有省份
+  * citys 选择省对应的所有市,
+  * areas 选择市对应的所有区
+  * areaInfo：点击确定时选择的省市县结果
+  * animationAddressMenu：动画
+  * addressMenuIsShow：是否可见
+  */
+  data: {
+    animationAddressMenu: {},
+    addressMenuIsShow: false,
+    value: [0, 0, 0],
+    provinces: [],
+    citys: [],
+    areas: [],
+    areaInfo: ''
+  },
 
   /**
-   * 页面的初始数据
-   */
-  data: {
-    tabTxt: ['品牌', '价格', '销量'],//分类
-    tab: [true, true, true],
-    pinpaiList: [{ 'id': '1', 'title': '品牌1' }, { 'id': '1', 'title': '品牌1' }],
-    pinpai_id: 0,//品牌
-    pinpai_txt: '',
-    jiage_id: 0,//价格
-    jiage_txt: '',
-    xiaoliang_id: 0,//销量
-    xiaoliang_txt: '',
-    details: [
-      {
-        img: '/images/house2.png',
-        prix: '73',
-        huxing: '3室2厅1卫',
-        area: '128',
-        price: '11456',
-        chanquan: '产权',
-        floor: '7/7',
-        title: '大连市西岗区锦园小区48号楼2单元707',
-        yongjin: '佣金1%，成交奖励奖励1万元',
-        world: [
-          {
-            message: 'foo',
-          },
-          {
-            message: 'bar'
-          }
-        ]
-      },
-      {
-        img: '/images/house2.png',
-        prix: '73',
-        huxing: '3室2厅1卫',
-        area: '128',
-        price: '11456',
-        chanquan: '产权',
-        floor: '7/7',
-        title: '大连市西岗区锦园小区48号楼2单元707',
-        yongjin: '佣金1%，成交奖励奖励1万元',
-        world: [
-          {
-            message: 'foo',
-          },
-          {
-            message: 'bar'
-          }
-        ]
-      },
-      {
-        img: '/images/house2.png',
-        prix: '73',
-        huxing: '3室2厅1卫',
-        area: '128',
-        price: '11456',
-        chanquan: '产权',
-        floor: '7/7',
-        title: '大连市西岗区锦园小区48号楼2单元707',
-        yongjin: '佣金1%，成交奖励奖励1万元',
-        world: [
-          {
-            message: 'foo',
-          },
-          {
-            message: 'bar'
-          }
-        ]
-      }
-
-    ],
-  },
-
-  // 选项卡
-  filterTab: function (e) {
-    var data = [true, true, true], index = e.currentTarget.dataset.index;
-    data[index] = !this.data.tab[index];
+  * 生命周期函数--监听页面加载
+  */
+  onLoad: function (options) {
+    // 默认联动显示北京
+    var id = address.provinces[0].id
     this.setData({
-      tab: data
+      provinces: address.provinces,
+      citys: address.citys[id],
+      areas: address.areas[address.citys[id][0].id],
     })
   },
-
-  //筛选项点击操作
-  filter: function (e) {
-    var self = this, id = e.currentTarget.dataset.id, txt = e.currentTarget.dataset.txt, tabTxt = this.data.tabTxt;
-    switch (e.currentTarget.dataset.index) {
-      case '0':
-        tabTxt[0] = txt;
-        self.setData({
-          tab: [true, true, true],
-          tabTxt: tabTxt,
-          pinpai_id: id,
-          pinpai_txt: txt
-        });
-        break;
-      case '1':
-        tabTxt[1] = txt;
-        self.setData({
-          tab: [true, true, true],
-          tabTxt: tabTxt,
-          jiage_id: id,
-          jiage_txt: txt
-        });
-        break;
-      case '2':
-        tabTxt[2] = txt;
-        self.setData({
-          tab: [true, true, true],
-          tabTxt: tabTxt,
-          xiaoliang_id: id,
-          xiaoliang_txt: txt
-        });
-        break;
+  // 点击所在地区弹出选择框
+  select: function (e) {
+    // 如果已经显示，不在执行显示动画
+    if (this.data.addressMenuIsShow) {
+      return false
+    } else {
+      // 执行显示动画
+      this.startAddressAnimation(true)
     }
-    //数据筛选
-    self.getDataList();
   },
-
-  //加载数据
-  getDataList: function () {
-    //调用数据接口，获取数据
-
-
+  // 执行动画
+  startAddressAnimation: function (isShow) {
+    if (isShow) {
+      // vh是用来表示尺寸的单位，高度全屏是100vh
+      this.animation.translateY(0 + 'vh').step()
+    } else {
+      this.animation.translateY(40 + 'vh').step()
+    }
+    this.setData({
+      animationAddressMenu: this.animation.export(),
+      addressMenuIsShow: isShow,
+    })
+  },
+  // 点击地区选择取消按钮
+  cityCancel: function (e) {
+    this.startAddressAnimation(false)
+  },
+  // 点击地区选择确定按钮
+  citySure: function (e) {
+    var that = this
+    var city = that.data.city
+    var value = that.data.value
+    this.startAddressAnimation(false)
+    // 将选择的城市信息显示到输入框
+    var areaInfo = that.data.provinces[value[0]].name + '·' + that.data.citys[value[1]].name + '·' + that.data.areas[value[2]].name
+    that.setData({
+      areaInfo: areaInfo,
+    })
+  },
+  // 处理省市县联动逻辑
+  cityChange: function (e) {
+    var value = e.detail.value
+    var provinces = this.data.provinces
+    var citys = this.data.citys
+    var areas = this.data.areas
+    var provinceNum = value[0]
+    var cityNum = value[1]
+    var countyNum = value[2]
+    // 如果省份选择项和之前不一样，表示滑动了省份，此时市默认是省的第一组数据，
+    if (this.data.value[0] != provinceNum) {
+      var id = provinces[provinceNum].id
+      this.setData({
+        value: [provinceNum, 0, 0],
+        citys: address.citys[id],
+        areas: address.areas[address.citys[id][0].id],
+      })
+    } else if (this.data.value[1] != cityNum) {
+      // 滑动选择了第二项数据，即市，此时区显示省市对应的第一组数据
+      var id = citys[cityNum].id
+      this.setData({
+        value: [provinceNum, cityNum, 0],
+        areas: address.areas[citys[cityNum].id],
+      })
+    } else {
+      // 滑动选择了区
+      this.setData({
+        value: [provinceNum, cityNum, countyNum]
+      })
+    }
+  },
+  onShow: function () {
+    var animation = wx.createAnimation({
+      duration: 500,
+      timingFunction: 'linear',
+    })
+    this.animation = animation
   }
-
 })
