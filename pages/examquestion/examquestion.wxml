@@ -1,0 +1,40 @@
+<button class="btn-box" type="button" bindtap="entryExamQuestionChoose">添加试题</button>
+
+<view class="container">
+  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{questionList}}" wx:key="" data-id="{{item.id}}">
+    <view class='content'>
+      <view class='column user-commonProblem userstyle' catchtap="listTap" data-index="{{index}}">
+        <view class='row full_width'>
+          <text class="userTextStyle">{{item.title}}</text>
+          <!-- <view class="{{item.show?' list_open_arrow':'list_close_arrow'}}"></view> -->
+        </view>
+      </view>
+      <view wx:if='{{item.show}}'>
+        <view wx:for='{{item.answers}}' wx:for-item="childrenItem" wx:key='this'>
+          <view class='list_item_name_box'>
+            <text class='list_item_name userTextStyle'>{{childrenItem.item}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="del" catchtap="del" data-id="{{item.id}}">删除</view>
+  </view>
+
+  <!-- 弹窗 -->
+  <modal title="更新试题" confirm-text="更新" cancel-text="取消"
+   hidden="{{modalHidden}}" bindconfirm="confirmChange" bindcancel="cancellChange" >
+    <view class="post-userList">
+        <view class="userdata">
+          <view class="userdata-name">名称</view>
+          <view class="userdata-symbol"></view>
+          <input class="userdata-input" type="text" bindinput="bindName" value="{{name}}" placeholder="请输入名称" />
+        </view>
+        <view class="userdata">
+          <view class="userdata-name">描述</view>
+          <view class="userdata-symbol"></view>
+          <input class="userdata-input" type="text" bindinput="bindDescription" value="{{description}}" placeholder="请输入描述" />
+        </view>
+    </view>
+  </modal>
+
+</view>
