@@ -10,7 +10,7 @@
       <view class='column user-commonProblem userstyle'>
         <view class='row full_width'>
           <text class="userTextStyle">{{item.name}}</text>
-          <text class="righthead" catchtap="entry" data-id="{{item.id}}"></text>
+          <text class="righthead" catchtap="entry" data-id="{{item.id}}" data-name="{{item.name}}"></text>
         </view>
       </view>
     </view>

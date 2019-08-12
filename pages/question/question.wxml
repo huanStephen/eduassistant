@@ -17,12 +17,12 @@
 </view>
 
 <view class="container">
-  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{questionList}}" wx:key="" data-id="{{item.id}}" bindlongpress="openUpdateWin">
+  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" wx:for="{{questionList}}" wx:key="" data-id="{{item.id}}">
     <view class='content'>
       <view class='column user-commonProblem userstyle' catchtap="listTap" data-index="{{index}}">
         <view class='row full_width'>
           <text class="userTextStyle">{{item.title}}</text>
-          <view class="{{item.show?' list_open_arrow':'list_close_arrow'}}"></view>
+          <text class="righthead" catchtap="entry" data-id="{{item.id}}"></text>
         </view>
       </view>
       <view wx:if='{{item.show}}'>
@@ -37,7 +37,7 @@
   </view>
 
   <!-- 弹窗 -->
-  <modal title="更新试题" confirm-text="更新" cancel-text="取消"
+  <modal title="映射大纲" confirm-text="映射" cancel-text="取消"
    hidden="{{modalHidden}}" bindconfirm="confirmChange" bindcancel="cancellChange" >
     <view class="post-userList">
         <view class="userdata">

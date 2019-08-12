@@ -1,7 +1,7 @@
 <!--pages/user/user.wxml-->
 <view class="container">
 
-  <view class="user-logo">
+  <view class="user-logo" style="margin-bottom: 10rpx;">
     <image class="user-logo-img" src="/images/McDonaldLogo.png"></image>
   </view>
 

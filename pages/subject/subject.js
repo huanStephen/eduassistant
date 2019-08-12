@@ -29,6 +29,14 @@ Page({
    * 添加/更新科目
    */
   confirmChange: function () {
+    if ('' == this.data.name) {
+      wx.showToast({
+        title: '请输入科目名称！',
+        icon: 'none',
+        duration: 1000
+      });
+      return ;
+    }
     var subData = {
       id: null,
       name: this.data.name,
@@ -75,6 +83,12 @@ Page({
       //   }
       // });
     }
+
+    wx.showToast({
+      title: '添加/更新成功',
+      icon: 'success',
+      duration: 2000
+    });
 
     this.setData({
       modalHidden: true
