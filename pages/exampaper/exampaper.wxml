@@ -1,0 +1,39 @@
+<!--pages/user/user.wxml-->
+<view class="container">
+
+  <view class="user-logo" style="margin-bottom: 10rpx;">
+    <image class="user-logo-img" src="/images/McDonaldLogo.png"></image>
+  </view>
+
+  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{exampaperList}}" wx:key="" data-id="{{item.id}}" data-sort="{{item.sort}}" data-name="{{item.name}}" data-description="{{item.description}}" bindlongpress="openUpdateWin">
+    <view class='content'>
+      <view class='column user-commonProblem userstyle'>
+        <view class='row full_width'>
+          <text class="userTextStyle">{{item.name}}</text>
+          <text class="righthead" catchtap="entry" data-id="{{item.id}}" data-name="{{item.name}}"></text>
+        </view>
+      </view>
+    </view>
+    <view class="del" catchtap="del" data-id="{{item.id}}">删除</view>
+  </view>
+
+  <button class="btn-box" type="button" bindtap="openAddWin">添加试卷</button>
+
+  <!-- 弹窗 -->
+  <modal title="{{modalStatusTxt}}试卷" confirm-text="{{modalStatusTxt}}" cancel-text="取消"
+   hidden="{{modalHidden}}" bindconfirm="confirmChange" bindcancel="cancellChange" >
+    <view class="post-userList">
+        <view class="userdata">
+          <view class="userdata-name">名称</view>
+          <view class="userdata-symbol"></view>
+          <input class="userdata-input" type="text" bindinput="bindName" value="{{name}}" placeholder="请输入名称" />
+        </view>
+        <view class="userdata">
+          <view class="userdata-name">描述</view>
+          <view class="userdata-symbol"></view>
+          <input class="userdata-input" type="text" bindinput="bindDescription" value="{{description}}" placeholder="请输入描述" />
+        </view>
+    </view>
+  </modal>
+
+</view>
