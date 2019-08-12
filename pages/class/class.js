@@ -29,6 +29,14 @@ Page({
    * 添加/更新班级
    */
   confirmChange: function () {
+    if ('' == this.data.name) {
+      wx.showToast({
+        title: '请输入班级名称！',
+        icon: 'none',
+        duration: 1000
+      });
+      return;
+    }
     var subData = {
       id: null,
       name: this.data.name,
@@ -75,6 +83,12 @@ Page({
       //   }
       // });
     }
+
+    wx.showToast({
+      title: '添加/更新成功',
+      icon: 'success',
+      duration: 2000
+    });
 
     this.setData({
       modalHidden: true
@@ -154,7 +168,6 @@ Page({
    * 进入学生列表
    */
   entry: function(el) {
-    console.log(el.currentTarget.dataset.name)
     wx.navigateTo({
       url: '../student/student?classId=' + el.currentTarget.dataset.id + '&className=' + el.currentTarget.dataset.name
     })
