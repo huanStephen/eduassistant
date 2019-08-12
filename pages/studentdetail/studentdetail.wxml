@@ -1,0 +1,56 @@
+<!--pages/user/user.wxml-->
+<view class="container">
+
+  <view>
+    <view>饼图</view>
+    <view>
+      <canvas canvas-id="pieCanvas" class="canvas" style="height:300px" bindtouchstart="touchHandler"></canvas>
+    </view>
+  </view>
+
+  <view>
+    <view>环图</view>
+    <view>
+      <canvas canvas-id="ringCanvas" class="canvas" bindtouchstart="touchHandler"></canvas>
+    </view>
+  </view>
+
+  <view>
+    <view>卫星图</view>
+    <view>
+      <canvas canvas-id="radarCanvas" class="canvas" bindtouchstart="touchHandler"></canvas>
+    </view>
+  </view>
+
+  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{exampaperList}}" wx:key="" data-id="{{item.id}}">
+    <view class='content'>
+      <view class='column user-commonProblem userstyle'>
+        <view class='row full_width'>
+          <text class="userTextStyle">{{item.name}}</text>
+          <text class="righthead" catchtap="entry" data-id="{{item.id}}"></text>
+        </view>
+      </view>
+    </view>
+    <view class="del" catchtap="del" data-id="{{item.id}}">删除</view>
+  </view>
+
+  <button class="btn-box" type="button" bindtap="openAddWin">添加学生测试</button>
+
+  <!-- 弹窗 -->
+  <modal title="{{modalStatusTxt}}学生" confirm-text="{{modalStatusTxt}}" cancel-text="取消"
+   hidden="{{modalHidden}}" bindconfirm="confirmChange" bindcancel="cancellChange" >
+    <view class="post-userList">
+        <view class="userdata">
+          <view class="userdata-name">名称</view>
+          <view class="userdata-symbol"></view>
+          <input class="userdata-input" type="text" bindinput="bindName" value="{{name}}" placeholder="请输入名称" />
+        </view>
+        <view class="userdata">
+          <view class="userdata-name">描述</view>
+          <view class="userdata-symbol"></view>
+          <input class="userdata-input" type="text" bindinput="bindDescription" value="{{description}}" placeholder="请输入描述" />
+        </view>
+    </view>
+  </modal>
+
+</view>
