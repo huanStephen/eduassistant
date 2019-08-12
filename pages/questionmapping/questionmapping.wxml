@@ -1,0 +1,69 @@
+<!--pages/user/user.wxml-->
+<view class="container">
+
+  <view class="user-logo" style="margin-bottom: 10rpx;">
+    <image class="user-logo-img" src="/images/McDonaldLogo.png"></image>
+  </view>
+
+  <view class="touch-item" style="margin-bottom: 10rpx;">
+    <view class="content">
+      <view class="column user-commonProblem userstyle">
+        <view class="row full_width">
+          <text class="userTextStyle">{{title}}</text>
+        </view>
+      </view>
+      <view wx:for='{{answers}}' wx:for-item="answer" wx:key='this'>
+        <view class='list_item_name_box'>
+          <text class='list_item_name userTextStyle'>{{answer.item}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="del" catchtap="del" data-id="{{item.id}}">删除</view>
+  </view>
+
+<view class='content'>
+  <view class='column user-commonProblem userstyle'>
+    <view class='row full_width'>
+      <text class="userTextStyle" style="font-size: 32rpx; font-weight: bold;">试题映射关系：</text>
+    </view>
+  </view>
+</view>
+  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{mappingList}}" wx:key="" data-id="{{item.id}}" data-weight="{{item.weight}}" bindlongpress="openUpdateWin">
+    <view class='content'>
+      <view class='column user-commonProblem userstyle'>
+        <view class='row full_width'>
+          <text class="userTextStyle">{{item.subjectName}} -> {{item.chapterName}} -> {{item.outlineName}}   权重：{{item.weight}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="del" catchtap="del" data-id="{{item.id}}">删除</view>
+  </view>
+
+  <button class="btn-box" type="button" bindtap="openAddWin">添加映射</button>
+
+  <!-- 弹窗 -->
+  <modal title="{{modalStatusTxt}}映射" confirm-text="{{modalStatusTxt}}" cancel-text="取消"
+   hidden="{{modalHidden}}" bindconfirm="confirmChange" bindcancel="cancellChange" >
+    <view class="post-userList">
+        <view class="userdata">
+          <view class="userdata-name">大纲</view>
+          <view class="userdata-symbol"></view>
+          <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}" range-key="name">
+            <view class="picker">
+              {{multiArray[0][multiIndex[0]].name}}，{{multiArray[1][multiIndex[1]].name}}，{{multiArray[2][multiIndex[2]].name}}
+            </view>
+          </picker>
+        </view>
+        <view class="userdata">
+          <view class="userdata-name">权重</view>
+          <view class="userdata-symbol"></view>
+          <view class="section section_gap" style="width: 320rpx;">
+            <view class="body-view">
+              <slider bindchange="slider4change" min="0" max="{{max}}" value="{{weight}}" show-value/>
+            </view>
+          </view>
+        </view>
+    </view>
+  </modal>
+
+</view>
