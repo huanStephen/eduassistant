@@ -2,7 +2,7 @@
 <view class="container">
   <button class="btn-box" type="button" bindtap="openAddWin">添加科目</button>
 
-  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{subjectList}}" wx:key="" data-id="{{item.id}}" data-sort="{{item.sort}}" data-name="{{item.name}}" data-description="{{item.description}}" bindlongpress="openUpdateWin">
+  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{subjectList}}" wx:key="" data-id="{{item.id}}" data-name="{{item.name}}" data-description="{{item.description}}" bindlongpress="openUpdateWin">
     <view class='content'>
       <view class='column user-commonProblem userstyle'>
         <view class='row full_width'>

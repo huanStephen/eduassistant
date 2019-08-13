@@ -13,7 +13,6 @@ Page({
     modalStatusTxt: '',
     modalStatus: 0,
     id: 0,
-    sort: 0,
     name: '',
     description: '',
     currPage: 1,
@@ -40,62 +39,74 @@ Page({
       return ;
     }
     var subData = {
-      id: null,
       name: this.data.name,
-      description: this.data.description,
-      sort: null
+      description: this.data.description
     }
     // 添加的情况
     if (1 == this.data.modalStatus) {
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function(res) {
-      //     if (1 == res.result) {
-
-      //       that.onLoad();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/subject/addSubject',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function(res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "科目添加成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     } 
     // 更新的情况
     else if (2 == this.data.modalStatus) {
       subData.id = this.data.id;
-      subData.sort = this.data.sort;
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.onLoad();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/subject/updateSubject',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "科目更新成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     }
-
-    wx.showToast({
-      title: '添加/更新成功',
-      icon: 'success',
-      duration: 2000
-    });
-
-    this.setData({
-      modalHidden: true
-    });
-    this.cleanModal();
   },
 
   /**
@@ -124,7 +135,7 @@ Page({
    * 更新科目
    */
   openUpdateWin: function (el) {
-    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, sort: el.currentTarget.dataset.sort, name: el.currentTarget.dataset.name, description: el.currentTarget.dataset.description});
+    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, name: el.currentTarget.dataset.name, description: el.currentTarget.dataset.description});
   },
 
   /**
@@ -193,22 +204,31 @@ Page({
       title: '提示',
       content: '确认要删除科目信息么？',
       success: function (res) {
-        // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.onLoad();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+        wx.request({
+          url: 'http://localhost:8080/wx/subject/delSubject',
+          data: { subjectId: el.currentTarget.dataset.id},
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success: function (res) {
+            var result = res.data;
+            if (1 == result.status) {
+              wx.showToast({
+                title: "科目删除成功！",
+                icon: 'success',
+                duration: 2000
+              });
+              that.init();
+            } else {
+              wx.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 1000
+              });
+            }
+          }
+        });
       }
     }); 
   },
