@@ -192,7 +192,7 @@ Page({
    */
   entry: function(el) {
     wx.navigateTo({
-      url: '../chapter/chapter?subjectId=' + el.currentTarget.dataset.id
+      url: '../chapter/chapter?subjectId=' + el.currentTarget.dataset.id + '&subjectName=' + el.currentTarget.dataset.name
     })
   },
 

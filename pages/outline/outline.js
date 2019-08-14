@@ -131,7 +131,7 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    wx.setNavigationBarTitle({ title: options.chapterName + '的大纲'});
+    wx.setNavigationBarTitle({ title: options.chapterTitle + '的大纲'});
     this.setData({ chapterId: options.chapterId, outlineList: [{ id: 1, name: "第一节这一个超级长", sort: 1, description: 'Flex所支持的样式比Flash要丰富，样式定义的方法也很多。这也是Flex比Flash要强大、适合网页开发的地方之一。' }, { id: 2, name: "第二节", sort: 2, description: 'Flex会调用全局样式表global.css，该全局样式表由flex-config.xml定义' }, { id: 3, name: "第三节", sort: 3, description: '系统默认的样式表文件global.css文件其实没有任何样式定义，我们可以手动添加全局样式，也可以更改默认的全局样式文件路径。' }, { id: 4, name: "第四节", sort: 4, description: '在这里顺便提一点，定义外部css文件的时候，颜色样式有四种定义方式' }, { id: 5, name: "第五节", sort: 5, description: '下面的例子定义了myFontStyle子类样式，要使用对应的样式可以在组件中使用styleName属性来应用样式。' }, { id: 6, name: "第六节", sort: 6, description: '下面的样式则定义了所有Button组件的样式，使用该方式定义的样式在使用的时候不需要指定样式名。' }] }); 
     this.init();
   },

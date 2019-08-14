@@ -15,8 +15,10 @@ Page({
     modalStatus: 0,
     id: 0,
     sort: 0,
-    name: '',
-    description: ''
+    title: '',
+    description: '',
+    currPage: 1,
+    pageSize: 10
   },
 
   /**
@@ -30,7 +32,7 @@ Page({
    * 添加/更新章节
    */
   confirmChange: function () {
-    if ('' == this.data.name) {
+    if ('' == this.data.title) {
       wx.showToast({
         title: '请输入章节名称！',
         icon: 'none',
@@ -39,62 +41,75 @@ Page({
       return;
     }
     var subData = {
-      id: null,
-      name: this.data.name,
-      description: this.data.description,
-      sort: null
+      subjectId: this.data.subjectId,
+      title: this.data.title,
+      description: this.data.description
     }
     // 添加的情况
     if (1 == this.data.modalStatus) {
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function(res) {
-      //     if (1 == res.result) {
-
-      //       that.init();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/chapter/addChapter',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "科目章节成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     } 
     // 更新的情况
     else if (2 == this.data.modalStatus) {
       subData.id = this.data.id;
-      subData.sort = this.data.sort;
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.init();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/chapter/updateChapter',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "科目章节成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     }
-
-    wx.showToast({
-      title: '添加/更新成功',
-      icon: 'success',
-      duration: 2000
-    });
-
-    this.setData({
-      modalHidden: true
-    });
-    this.cleanModal();
   },
 
   /**
@@ -107,8 +122,8 @@ Page({
     this.cleanModal();
   },
 
-  bindName: function(el) {
-    this.setData({ name: el.detail.value})
+  bindTitle: function(el) {
+    this.setData({ title: el.detail.value})
   },
 
   bindDescription: function (el) {
@@ -116,14 +131,14 @@ Page({
   },
 
   cleanModal: function() {
-    this.setData({ name: '', description: ''})
+    this.setData({ title: '', description: ''})
   },
 
   /**
    * 更新章节
    */
   openUpdateWin: function (el) {
-    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, sort: el.currentTarget.dataset.sort, name: el.currentTarget.dataset.name, description: el.currentTarget.dataset.description});
+    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, sort: el.currentTarget.dataset.sort, title: el.currentTarget.dataset.title, description: el.currentTarget.dataset.description});
   },
 
   /**
@@ -131,7 +146,8 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    this.setData({ subjectId: options.subjectId, chapterList: [{ id: 1, name: "第一章", sort: 1, description: '' }, { id: 2, name: "第二章", sort: 2, description: '' }, { id: 3, name: "第三章", sort: 3, description: '' }, { id: 4, name: "第四章", sort: 4, description: '' }, { id: 5, name: "第五章", sort: 5, description: '' }, { id: 6, name: "第六章", sort: 6, description: '' }] }); 
+    wx.setNavigationBarTitle({ title: options.subjectName + '的章节' });
+    this.setData({ subjectId: options.subjectId }); 
     this.init();
   },
 
@@ -139,20 +155,24 @@ Page({
    * 初始化数据
    */
   init: function() {
-    // wx.request({
-    //   url: '',
-    //   header: {
-    //     'content-type': 'application/json'
-    //   },
-    //   success: function (res) {
-    //     if (1 == res.result) {
-
-    //       that.setData({chapterList: res.list});
-    //     } else {
-
-    //     }
-    //   }
-    // });
+    wx.request({
+      url: 'http://localhost:8080/wx/chapter/getChapters?subjectId=' + that.data.subjectId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          that.setData({ chapterList: result.data.list });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   //手指触摸动作开始 记录起点X坐标
@@ -174,7 +194,7 @@ Page({
 
   entry: function(el) {
     wx.navigateTo({
-      url: '../outline/outline?chapterId=' + el.currentTarget.dataset.id + '&chapterName=' + el.currentTarget.dataset.name
+      url: '../outline/outline?chapterId=' + el.currentTarget.dataset.id + '&chapterTitle=' + el.currentTarget.dataset.title
     });
   },
 
@@ -186,23 +206,31 @@ Page({
       title: '提示',
       content: '确认要删除章节信息么？',
       success: function (res) {
-        console.log(el.currentTarget.dataset.id);
-        // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.init();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+        wx.request({
+          url: 'http://localhost:8080/wx/chapter/delChapter',
+          data: { chapterId: el.currentTarget.dataset.id },
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success: function (res) {
+            var result = res.data;
+            if (1 == result.status) {
+              wx.showToast({
+                title: "章节删除成功！",
+                icon: 'success',
+                duration: 2000
+              });
+              that.init();
+            } else {
+              wx.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 1000
+              });
+            }
+          }
+        });
       }
     }); 
   },
