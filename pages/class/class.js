@@ -13,9 +13,9 @@ Page({
     modalStatusTxt: '',
     modalStatus: 0,
     id: 0,
-    sort: 0,
     name: '',
-    description: ''
+    currPage: 1,
+    pageSize: 10
   },
 
   /**
@@ -38,50 +38,72 @@ Page({
       return;
     }
     var subData = {
-      id: null,
-      name: this.data.name,
-      description: this.data.description,
-      sort: null
+      name: this.data.name
     }
     // 添加的情况
     if (1 == this.data.modalStatus) {
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function(res) {
-      //     if (1 == res.result) {
-
-      //       that.onLoad();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/class/addClass',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "班级添加成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     } 
     // 更新的情况
     else if (2 == this.data.modalStatus) {
       subData.id = this.data.id;
-      subData.sort = this.data.sort;
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.onLoad();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/class/updateClass',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "班级更新成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     }
 
     wx.showToast({
@@ -110,19 +132,15 @@ Page({
     this.setData({ name: el.detail.value})
   },
 
-  bindDescription: function (el) {
-    this.setData({ description: el.detail.value})
-  },
-
   cleanModal: function() {
-    this.setData({ name: '', description: ''})
+    this.setData({ name: ''})
   },
 
   /**
    * 更新班级
    */
   openUpdateWin: function (el) {
-    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, sort: el.currentTarget.dataset.sort, name: el.currentTarget.dataset.name, description: el.currentTarget.dataset.description});
+    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, name: el.currentTarget.dataset.name});
   },
 
   /**
@@ -130,21 +148,28 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    this.setData({ classList: [{ id: 1, name: "1班", sort: 1, description: '' }, { id: 2, name: "2班", sort: 2, description: '' }, { id: 3, name: "3班", sort: 3, description: '' }, { id: 4, name: "4班", sort: 4, description: '' }, { id: 5, name: "5班", sort: 5, description: '' }, { id: 6, name: "6班", sort: 6, description: '' }] });
-    // wx.request({
-    //   url: '',
-    //   header: {
-    //     'content-type': 'application/json'
-    //   },
-    //   success: function (res) {
-    //     if (1 == res.result) {
-          
-    //       that.setData({classList: res.list});
-    //     } else {
+    this.init();
+  },
 
-    //     }
-    //   }
-    // });
+  init: function() {
+    wx.request({
+      url: 'http://localhost:8080/wx/class/getClasses?currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          that.setData({ classList: result.data.list });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   //手指触摸动作开始 记录起点X坐标
@@ -181,22 +206,31 @@ Page({
       title: '提示',
       content: '确认要删除班级信息么？',
       success: function (res) {
-        // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.onLoad();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+        wx.request({
+          url: 'http://localhost:8080/wx/class/delClass',
+          data: { classId: el.currentTarget.dataset.id },
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success: function (res) {
+            var result = res.data;
+            if (1 == result.status) {
+              wx.showToast({
+                title: "班级删除成功！",
+                icon: 'success',
+                duration: 2000
+              });
+              that.init();
+            } else {
+              wx.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 1000
+              });
+            }
+          }
+        });
       }
     }); 
   },
