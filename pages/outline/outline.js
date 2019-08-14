@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    subjectId: 0,
     chapterId: 0,
     modalHidden: true,
     outlineList: [],
@@ -15,8 +16,10 @@ Page({
     modalStatus: 0,
     id: 0,
     sort: 0,
-    name: '',
-    description: ''
+    title: '',
+    description: '',
+    currPage: 1,
+    pageSize: 10
   },
 
   /**
@@ -30,7 +33,7 @@ Page({
    * 添加/更新大纲
    */
   confirmChange: function () {
-    if ('' == this.data.name) {
+    if ('' == this.data.title) {
       wx.showToast({
         title: '请输入大纲名称！',
         icon: 'none',
@@ -39,62 +42,76 @@ Page({
       return;
     }
     var subData = {
-      id: null,
-      name: this.data.name,
-      description: this.data.description,
-      sort: null
+      subjectId: this.data.subjectId,
+      chapterId: this.data.chapterId,
+      title: this.data.title,
+      description: this.data.description
     }
     // 添加的情况
     if (1 == this.data.modalStatus) {
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function(res) {
-      //     if (1 == res.result) {
-
-      //       that.init();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/outline/addOutline',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "大纲添加成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     } 
     // 更新的情况
     else if (2 == this.data.modalStatus) {
       subData.id = this.data.id;
-      subData.sort = this.data.sort;
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.init();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/outline/updateOutline',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "大纲更新成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     }
-
-    wx.showToast({
-      title: '添加/更新成功',
-      icon: 'success',
-      duration: 2000
-    });
-
-    this.setData({
-      modalHidden: true
-    });
-    this.cleanModal();
   },
 
   /**
@@ -107,8 +124,8 @@ Page({
     this.cleanModal();
   },
 
-  bindName: function(el) {
-    this.setData({ name: el.detail.value})
+  bindTitle: function(el) {
+    this.setData({ title: el.detail.value})
   },
 
   bindDescription: function (el) {
@@ -116,14 +133,14 @@ Page({
   },
 
   cleanModal: function() {
-    this.setData({ name: '', description: ''})
+    this.setData({ title: '', description: ''})
   },
 
   /**
    * 更新大纲
    */
   openUpdateWin: function (el) {
-    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, sort: el.currentTarget.dataset.sort, name: el.currentTarget.dataset.name, description: el.currentTarget.dataset.description});
+    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, sort: el.currentTarget.dataset.sort, title: el.currentTarget.dataset.title, description: el.currentTarget.dataset.description});
   },
 
   /**
@@ -132,7 +149,7 @@ Page({
   onLoad: function (options) {
     that = this;
     wx.setNavigationBarTitle({ title: options.chapterTitle + '的大纲'});
-    this.setData({ chapterId: options.chapterId, outlineList: [{ id: 1, name: "第一节这一个超级长", sort: 1, description: 'Flex所支持的样式比Flash要丰富，样式定义的方法也很多。这也是Flex比Flash要强大、适合网页开发的地方之一。' }, { id: 2, name: "第二节", sort: 2, description: 'Flex会调用全局样式表global.css，该全局样式表由flex-config.xml定义' }, { id: 3, name: "第三节", sort: 3, description: '系统默认的样式表文件global.css文件其实没有任何样式定义，我们可以手动添加全局样式，也可以更改默认的全局样式文件路径。' }, { id: 4, name: "第四节", sort: 4, description: '在这里顺便提一点，定义外部css文件的时候，颜色样式有四种定义方式' }, { id: 5, name: "第五节", sort: 5, description: '下面的例子定义了myFontStyle子类样式，要使用对应的样式可以在组件中使用styleName属性来应用样式。' }, { id: 6, name: "第六节", sort: 6, description: '下面的样式则定义了所有Button组件的样式，使用该方式定义的样式在使用的时候不需要指定样式名。' }] }); 
+    this.setData({ subjectId: options.subjectId, chapterId: options.chapterId }); 
     this.init();
   },
 
@@ -140,20 +157,24 @@ Page({
    * 初始化数据
    */
   init: function() {
-    // wx.request({
-    //   url: '',
-    //   header: {
-    //     'content-type': 'application/json'
-    //   },
-    //   success: function (res) {
-    //     if (1 == res.result) {
-
-    //       that.setData({outlineList: res.list});
-    //     } else {
-
-    //     }
-    //   }
-    // });
+    wx.request({
+      url: 'http://localhost:8080/wx/outline/getOutlines?chapterId=' + that.data.chapterId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          that.setData({ outlineList: result.data.list });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   //手指触摸动作开始 记录起点X坐标
@@ -181,23 +202,31 @@ Page({
       title: '提示',
       content: '确认要删除大纲信息么？',
       success: function (res) {
-        console.log(el.currentTarget.dataset.id);
-        // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.init();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+        wx.request({
+          url: 'http://localhost:8080/wx/outline/delOutline',
+          data: { outlineId: el.currentTarget.dataset.id },
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success: function (res) {
+            var result = res.data;
+            if (1 == result.status) {
+              wx.showToast({
+                title: "大纲删除成功！",
+                icon: 'success',
+                duration: 2000
+              });
+              that.init();
+            } else {
+              wx.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 1000
+              });
+            }
+          }
+        });
       }
     }); 
   },

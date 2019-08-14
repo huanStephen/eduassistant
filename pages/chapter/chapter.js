@@ -58,7 +58,7 @@ Page({
           var result = res.data;
           if (1 == result.status) {
             wx.showToast({
-              title: "科目章节成功！",
+              title: "章节添加成功！",
               icon: 'success',
               duration: 2000
             });
@@ -91,7 +91,7 @@ Page({
           var result = res.data;
           if (1 == result.status) {
             wx.showToast({
-              title: "科目章节成功！",
+              title: "章节更新成功！",
               icon: 'success',
               duration: 2000
             });
@@ -194,7 +194,7 @@ Page({
 
   entry: function(el) {
     wx.navigateTo({
-      url: '../outline/outline?chapterId=' + el.currentTarget.dataset.id + '&chapterTitle=' + el.currentTarget.dataset.title
+      url: '../outline/outline?subjectId=' + that.data.subjectId + '&chapterId=' + el.currentTarget.dataset.id + '&chapterTitle=' + el.currentTarget.dataset.title
     });
   },
 
