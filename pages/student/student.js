@@ -14,9 +14,9 @@ Page({
     modalStatusTxt: '',
     modalStatus: 0,
     id: 0,
-    sort: 0,
     name: '',
-    description: ''
+    currPage: 1,
+    pageSize: 10
   },
 
   /**
@@ -39,62 +39,74 @@ Page({
       return;
     }
     var subData = {
-      id: null,
-      name: this.data.name,
-      description: this.data.description,
-      sort: null
+      classId: this.data.classId,
+      name: this.data.name
     }
     // 添加的情况
     if (1 == this.data.modalStatus) {
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function(res) {
-      //     if (1 == res.result) {
-
-      //       that.init();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/student/addStudent',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "学生添加成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     } 
     // 更新的情况
     else if (2 == this.data.modalStatus) {
       subData.id = this.data.id;
-      subData.sort = this.data.sort;
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.init();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/student/updateStudent',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "学生更新成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     }
-
-    wx.showToast({
-      title: '添加/更新成功',
-      icon: 'success',
-      duration: 2000
-    });
-
-    this.setData({
-      modalHidden: true
-    });
-    this.cleanModal();
   },
 
   /**
@@ -111,19 +123,15 @@ Page({
     this.setData({ name: el.detail.value})
   },
 
-  bindDescription: function (el) {
-    this.setData({ description: el.detail.value})
-  },
-
   cleanModal: function() {
-    this.setData({ name: '', description: ''})
+    this.setData({ name: ''})
   },
 
   /**
    * 更新学生
    */
   openUpdateWin: function (el) {
-    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, sort: el.currentTarget.dataset.sort, name: el.currentTarget.dataset.name, description: el.currentTarget.dataset.description});
+    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, name: el.currentTarget.dataset.name});
   },
 
   /**
@@ -132,7 +140,7 @@ Page({
   onLoad: function (options) {
     that = this;
     wx.setNavigationBarTitle({ title: options.className + '的学生' });
-    this.setData({ classId: options.classId, studentList: [{ id: 1, name: "张三", sort: 1, description: '' }, { id: 2, name: "李四", sort: 2, description: '' }, { id: 3, name: "王五", sort: 3, description: '' }, { id: 4, name: "赵六", sort: 4, description: '' }, { id: 5, name: "刘奇", sort: 5, description: '' }, { id: 6, name: "孙八", sort: 6, description: '' }] }); 
+    this.setData({ classId: options.classId }); 
     this.init();
   },
 
@@ -140,20 +148,24 @@ Page({
    * 初始化数据
    */
   init: function() {
-    // wx.request({
-    //   url: '',
-    //   header: {
-    //     'content-type': 'application/json'
-    //   },
-    //   success: function (res) {
-    //     if (1 == res.result) {
-
-    //       that.setData({studentList: res.list});
-    //     } else {
-
-    //     }
-    //   }
-    // });
+    wx.request({
+      url: 'http://localhost:8080/wx/student/getStudents?classId=' + that.data.classId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          that.setData({ studentList: result.data.list });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   //手指触摸动作开始 记录起点X坐标
@@ -181,23 +193,31 @@ Page({
       title: '提示',
       content: '确认要删除学生信息么？',
       success: function (res) {
-        console.log(el.currentTarget.dataset.id);
-        // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.init();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+        wx.request({
+          url: 'http://localhost:8080/wx/student/delStudent',
+          data: { studentId: el.currentTarget.dataset.id },
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success: function (res) {
+            var result = res.data;
+            if (1 == result.status) {
+              wx.showToast({
+                title: "学生删除成功！",
+                icon: 'success',
+                duration: 2000
+              });
+              that.init();
+            } else {
+              wx.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 1000
+              });
+            }
+          }
+        });
       }
     }); 
   },
