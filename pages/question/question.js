@@ -95,7 +95,6 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    // this.setData({ questionList: [{ id: 1, title: "第一题", answers: [{ item: '第一题答案1' }, { item: '第一题答案2' }, { item: '第一题答案3' }, { item: '第一题答案4' }] }, { id: 2, title: "第二题", answers: [{ item: '第二题答案1' }, { item: '第二题答案2' }, { item: '第二题答案3' }, { item: '第二题答案4' }] }, { id: 3, title: "第三题", answers: [{ item: '第三题答案1' }, { item: '第三题答案2' }, { item: '第三题答案3' }, { item: '第三题答案4' }] }, { id: 4, title: "第四题", answers: [{ item: '第四题答案1' }, { item: '第四题答案2' }, { item: '第四题答案3' }, { item: '第四题答案4' }] }, { id: 5, title: "第五题", answers: [{ item: '第五题答案1' }, { item: '第五题答案2' }, { item: '第五题答案3' }, { item: '第五题答案4' }] }, { id: 6, title: "第六题", answers: [{ item: '第六题答案1' }, { item: '第六题答案2' }, { item: '第六题答案3' }, { item: '第六题答案4' }] }], subjectList: [{ 'id': '1', 'title': '七年级英语' }, { 'id': '2', 'title': '八年级英语' }, { 'id': '3', 'title': '九年级英语' }, { 'id': '4', 'title': '高一英语' }, { 'id': '5', 'title': '高二英语' }, { 'id': '6', 'title': '高三英语' }], chapterList: [{ 'id': '1', 'title': '第一章' }, { 'id': '2', 'title': '第二章' }, { 'id': '3', 'title': '第三章' }, { 'id': '4', 'title': '第四章' }, { 'id': '5', 'title': '第五章' }, { 'id': '6', 'title': '第六章' }], outlineList: [{ 'id': '1', 'title': '第一节' }, { 'id': '2', 'title': '第二节' }, { 'id': '3', 'title': '第三节' }, { 'id': '4', 'title': '第四节' }, { 'id': '5', 'title': '第五节' }, { 'id': '6', 'title': '第六节' }] });
     this.init();
   },
 
@@ -243,7 +242,6 @@ Page({
             }
           }
         });
-        
         break;
       case '2':
         tabTxt[2] = txt;
