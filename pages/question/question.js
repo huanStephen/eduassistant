@@ -7,6 +7,7 @@ Page({
    */
   data: {
     tabTxt: ['科目', '章节', '大纲'],//分类
+    answerTxt: ['A', 'B', 'C', 'D', 'E'],
     tab: [true, true, true],
     questionList: [],
     subjectList: [],
@@ -19,7 +20,12 @@ Page({
     id: 0,
     sort: 0,
     name: '',
-    description: ''
+    description: '',
+    currPage: 1,
+    pageSize: 10,
+    subject_id: 0,
+    chapter_id: 0,
+    outline_id: 0
   },
 
   /**
@@ -89,7 +95,7 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    this.setData({ questionList: [{ id: 1, title: "第一题", answers: [{ item: '第一题答案1' }, { item: '第一题答案2' }, { item: '第一题答案3' }, { item: '第一题答案4' }] }, { id: 2, title: "第二题", answers: [{ item: '第二题答案1' }, { item: '第二题答案2' }, { item: '第二题答案3' }, { item: '第二题答案4' }] }, { id: 3, title: "第三题", answers: [{ item: '第三题答案1' }, { item: '第三题答案2' }, { item: '第三题答案3' }, { item: '第三题答案4' }] }, { id: 4, title: "第四题", answers: [{ item: '第四题答案1' }, { item: '第四题答案2' }, { item: '第四题答案3' }, { item: '第四题答案4' }] }, { id: 5, title: "第五题", answers: [{ item: '第五题答案1' }, { item: '第五题答案2' }, { item: '第五题答案3' }, { item: '第五题答案4' }] }, { id: 6, title: "第六题", answers: [{ item: '第六题答案1' }, { item: '第六题答案2' }, { item: '第六题答案3' }, { item: '第六题答案4' }] }], subjectList: [{ 'id': '1', 'title': '七年级英语' }, { 'id': '2', 'title': '八年级英语' }, { 'id': '3', 'title': '九年级英语' }, { 'id': '4', 'title': '高一英语' }, { 'id': '5', 'title': '高二英语' }, { 'id': '6', 'title': '高三英语' }], chapterList: [{ 'id': '1', 'title': '第一章' }, { 'id': '2', 'title': '第二章' }, { 'id': '3', 'title': '第三章' }, { 'id': '4', 'title': '第四章' }, { 'id': '5', 'title': '第五章' }, { 'id': '6', 'title': '第六章' }], outlineList: [{ 'id': '1', 'title': '第一节' }, { 'id': '2', 'title': '第二节' }, { 'id': '3', 'title': '第三节' }, { 'id': '4', 'title': '第四节' }, { 'id': '5', 'title': '第五节' }, { 'id': '6', 'title': '第六节' }] });
+    // this.setData({ questionList: [{ id: 1, title: "第一题", answers: [{ item: '第一题答案1' }, { item: '第一题答案2' }, { item: '第一题答案3' }, { item: '第一题答案4' }] }, { id: 2, title: "第二题", answers: [{ item: '第二题答案1' }, { item: '第二题答案2' }, { item: '第二题答案3' }, { item: '第二题答案4' }] }, { id: 3, title: "第三题", answers: [{ item: '第三题答案1' }, { item: '第三题答案2' }, { item: '第三题答案3' }, { item: '第三题答案4' }] }, { id: 4, title: "第四题", answers: [{ item: '第四题答案1' }, { item: '第四题答案2' }, { item: '第四题答案3' }, { item: '第四题答案4' }] }, { id: 5, title: "第五题", answers: [{ item: '第五题答案1' }, { item: '第五题答案2' }, { item: '第五题答案3' }, { item: '第五题答案4' }] }, { id: 6, title: "第六题", answers: [{ item: '第六题答案1' }, { item: '第六题答案2' }, { item: '第六题答案3' }, { item: '第六题答案4' }] }], subjectList: [{ 'id': '1', 'title': '七年级英语' }, { 'id': '2', 'title': '八年级英语' }, { 'id': '3', 'title': '九年级英语' }, { 'id': '4', 'title': '高一英语' }, { 'id': '5', 'title': '高二英语' }, { 'id': '6', 'title': '高三英语' }], chapterList: [{ 'id': '1', 'title': '第一章' }, { 'id': '2', 'title': '第二章' }, { 'id': '3', 'title': '第三章' }, { 'id': '4', 'title': '第四章' }, { 'id': '5', 'title': '第五章' }, { 'id': '6', 'title': '第六章' }], outlineList: [{ 'id': '1', 'title': '第一节' }, { 'id': '2', 'title': '第二节' }, { 'id': '3', 'title': '第三节' }, { 'id': '4', 'title': '第四节' }, { 'id': '5', 'title': '第五节' }, { 'id': '6', 'title': '第六节' }] });
     this.init();
   },
 
@@ -97,20 +103,24 @@ Page({
    * 初始化数据
    */
   init: function () {
-    // wx.request({
-    //   url: '',
-    //   header: {
-    //     'content-type': 'application/json'
-    //   },
-    //   success: function (res) {
-    //     if (1 == res.result) {
-
-    //       that.setData({questionList: res.list});
-    //     } else {
-
-    //     }
-    //   }
-    // });
+    wx.request({
+      url: 'http://localhost:8080/wx/subject/getSubjects?currPage=1&pageSize=100',
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          that.setData({ subjectList: result.data.list });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   //手指触摸动作开始 记录起点X坐标
@@ -175,36 +185,103 @@ Page({
     switch (dataset.index) {
       case '0':
         tabTxt[0] = txt;
-        self.setData({
-          tab: [true, true, true],
-          tabTxt: tabTxt,
-          subject_id: id
+        tabTxt[1] = '章节';
+        tabTxt[2] = '大纲';
+        wx.request({
+          url: 'http://localhost:8080/wx/chapter/getChapters?subjectId=' + id + '&currPage=1&pageSize=100',
+          header: {
+            'content-type': 'application/json'
+          },
+          success: function (res) {
+            var result = res.data;
+            if (1 == result.status) {
+              self.setData({
+                tab: [true, true, true],
+                tabTxt: tabTxt,
+                subject_id: id,
+                chapter_id: 0,
+                outline_id: 0,
+                chapterList: result.data.list,
+                outlineList: []
+              });
+              that.getDataList();
+            } else {
+              wx.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 1000
+              });
+            }
+          }
         });
         break;
       case '1':
         tabTxt[1] = txt;
-        self.setData({
-          tab: [true, true, true],
-          tabTxt: tabTxt,
-          chapter_id: id
+        tabTxt[2] = '大纲';
+        wx.request({
+          url: 'http://localhost:8080/wx/outline/getOutlines?chapterId=' + id + '&currPage=1&pageSize=100',
+          header: {
+            'content-type': 'application/json'
+          },
+          success: function (res) {
+            var result = res.data;
+            if (1 == result.status) {
+              self.setData({
+                tab: [true, true, true],
+                tabTxt: tabTxt,
+                chapter_id: id,
+                outline_id: 0,
+                outlineList: result.data.list
+              });
+              that.getDataList();
+            } else {
+              wx.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 1000
+              });
+            }
+          }
         });
+        
         break;
       case '2':
         tabTxt[2] = txt;
         self.setData({
           tab: [true, true, true],
           tabTxt: tabTxt,
-          xiaoliang_id: id,
-          xiaoliang_txt: txt
+          outline_id: id
         });
+        that.getDataList();
         break;
     }
-    //数据筛选
-    self.getDataList();
   },
 
   getDataList: function () {
-
+    wx.request({
+      url: 'http://localhost:8080/wx/question/getChoiceQuestions?subjectId=' + that.data.subject_id + '&chapterId=' + that.data.chapter_id + '&outlineId=' + that.data.outline_id + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          var list = result.data.list;
+          if (null == list) {
+            list = [];
+          }
+          that.setData({
+            questionList: list
+          });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   //点击最外层列表展开收起
@@ -276,7 +353,27 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    var page = this.data.currPage + 1;
+    var arr = this.data.questionList;
+    wx.request({
+      url: 'http://localhost:8080/wx/question/getChoiceQuestions?subjectId=' + that.data.subject_id + '&chapterId=' + that.data.chapter_id + '&outlineId=' + that.data.outline_id + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          arr = arr.concat(result.data.list);
+          that.setData({ questionList: arr, currPage: page });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   /**

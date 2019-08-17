@@ -7,7 +7,7 @@
 <!--筛选项-->
 <view class="tabLayer" hidden="{{tab[0]}}">
   <text class="{{subject_id==0?'active':''}}" data-id="0" data-index="0" data-txt="未分类" bindtap="filter">未分类</text>
-  <text class="{{subject_id==item.id?'active':''}}" wx:for="{{subjectList}}" wx:key="pp" data-id="{{item.id}}" data-index="0" data-txt="{{item.title}}" bindtap="filter">{{item.title}}    </text>
+  <text class="{{subject_id==item.id?'active':''}}" wx:for="{{subjectList}}" wx:key="pp" data-id="{{item.id}}" data-index="0" data-txt="{{item.name}}" bindtap="filter">{{item.name}}    </text>
 </view>
 <view class="tabLayer" hidden="{{tab[1]}}">
     <text class="{{chapter_id==item.id?'active':''}}" wx:for="{{chapterList}}" wx:key="pp" wx:for-item="item" data-id="{{item.id}}" data-index="1" data-txt="{{item.title}}" bindtap="filter">{{item.title}}</text>
@@ -26,9 +26,9 @@
         </view>
       </view>
       <view wx:if='{{item.show}}'>
-        <view wx:for='{{item.answers}}' wx:for-item="childrenItem" wx:key='this'>
+        <view wx:for='{{item.options}}' wx:for-item="childrenItem" wx:for-index="idx" wx:key='this'>
           <view class='list_item_name_box'>
-            <text class='list_item_name userTextStyle'>{{childrenItem.item}}</text>
+            <text class='list_item_name userTextStyle'>{{answerTxt[idx]}} . {{childrenItem.answer}}</text>
           </view>
         </view>
       </view>
