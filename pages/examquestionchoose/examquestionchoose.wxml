@@ -9,7 +9,7 @@
 </view>
 <!--筛选项-->
 <view class="tabLayer" hidden="{{tab[0]}}">
-  <text class="{{subject_id==item.id?'active':''}}" wx:for="{{subjectList}}" wx:key="pp" data-id="{{item.id}}" data-index="0" data-txt="{{item.title}}" bindtap="filter">{{item.title}}    </text>
+  <text class="{{subject_id==item.id?'active':''}}" wx:for="{{subjectList}}" wx:key="pp" data-id="{{item.id}}" data-index="0" data-txt="{{item.name}}" bindtap="filter">{{item.name}}    </text>
 </view>
 <view class="tabLayer" hidden="{{tab[1]}}">
     <text class="{{chapter_id==item.id?'active':''}}" wx:for="{{chapterList}}" wx:key="pp" wx:for-item="item" data-id="{{item.id}}" data-index="1" data-txt="{{item.title}}" bindtap="filter">{{item.title}}</text>
@@ -22,16 +22,16 @@
   <checkbox-group bindchange="checkboxChange">
     <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" wx:for="{{questionList}}" wx:key="" data-id="{{item.id}}">
       <view class='content'>
-        <view class='column user-commonProblem userstyle' data-index="{{index}}">
+        <view class='column user-commonProblem userstyle' catchtap="listTap" data-index="{{index}}">
           <view class='row full_width'>
-            <text class="userTextStyle">{{item.title}}</text>
-            <checkbox value="{{item.id}}" />
+            <text class="userTextStyle">{{index + 1}}、{{item.title}}</text>
+            <checkbox value="{{item.id}}" checked="{{item.checked}}" />
           </view>
         </view>
         <view wx:if='{{item.show}}'>
-          <view wx:for='{{item.answers}}' wx:for-item="childrenItem" wx:key='this'>
+          <view wx:for='{{item.options}}' wx:for-item="option" wx:for-index="idx" wx:key='this'>
             <view class='list_item_name_box'>
-              <text class='list_item_name userTextStyle'>{{childrenItem.item}}</text>
+              <text class='list_item_name userTextStyle'>{{answerTxt[idx]}} . {{option.answer}}</text>
             </view>
           </view>
         </view>

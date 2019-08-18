@@ -21,7 +21,7 @@
     <view class='content'>
       <view class='column user-commonProblem userstyle' catchtap="listTap" data-index="{{index}}">
         <view class='row full_width'>
-          <text class="userTextStyle">{{item.title}}</text>
+          <text class="userTextStyle">{{index + 1}}、{{item.title}}</text>
           <text class="righthead" catchtap="entry" data-id="{{item.id}}"></text>
         </view>
       </view>

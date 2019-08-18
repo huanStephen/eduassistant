@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    answerTxt: ['A', 'B', 'C', 'D', 'E'],
     exampaperId: 0,
     questionList: [],
     modalHidden: true,
@@ -13,69 +14,13 @@ Page({
     ifName: false,
     modalHidden: true,
     id: 0,
-    sort: 0,
-    name: '',
-    description: ''
-  },
-
-  /**
-   * 添加/更新大纲
-   */
-  confirmChange: function () {
-    var subData = {
-      id: this.data.id,
-      name: this.data.name,
-      description: this.data.description,
-      sort: this.data.sort
-    }
-    // wx.request({
-    //   url: '',
-    //   data: subData,
-    //   method: 'POST',
-    //   header: {
-    //     'content-type': 'application/x-www-form-urlencoded'
-    //   },
-    //   success: function (res) {
-    //     if (1 == res.result) {
-
-    //       that.init();
-    //     } else {
-
-    //     }
-    //   }
-    // });
-
-    this.setData({
-      modalHidden: true
-    });
-    this.cleanModal();
-  },
-
-  /**
-   * 取消
-   */
-  cancellChange: function () {
-    this.setData({
-      modalHidden: true
-    });
-    this.cleanModal();
-  },
-
-  bindName: function (el) {
-    this.setData({ name: el.detail.value })
-  },
-
-  bindDescription: function (el) {
-    this.setData({ description: el.detail.value })
-  },
-
-  cleanModal: function () {
-    this.setData({ name: '', description: '' })
+    currPage: 1,
+    pageSize: 10
   },
 
   entryExamQuestionChoose: function() {
     wx.navigateTo({
-      url: '../examquestionchoose/examquestionchoose'
+      url: '../examquestionchoose/examquestionchoose?exampaperId=' + that.data.exampaperId
     })
   },
 
@@ -85,28 +30,31 @@ Page({
   onLoad: function (options) {
     that = this;
     wx.setNavigationBarTitle({ title: options.exampaperName + '的试题' });
-    this.setData({ exampaperId: options.exampaperId, questionList: [{ id: 1, title: "第一题", answers: [{ item: '第一题答案1' }, { item: '第一题答案2' }, { item: '第一题答案3' }, { item: '第一题答案4' }] }, { id: 2, title: "第二题", answers: [{ item: '第二题答案1' }, { item: '第二题答案2' }, { item: '第二题答案3' }, { item: '第二题答案4' }] }, { id: 3, title: "第三题", answers: [{ item: '第三题答案1' }, { item: '第三题答案2' }, { item: '第三题答案3' }, { item: '第三题答案4' }] }, { id: 4, title: "第四题", answers: [{ item: '第四题答案1' }, { item: '第四题答案2' }, { item: '第四题答案3' }, { item: '第四题答案4' }] }, { id: 5, title: "第五题", answers: [{ item: '第五题答案1' }, { item: '第五题答案2' }, { item: '第五题答案3' }, { item: '第五题答案4' }] }, { id: 6, title: "第六题", answers: [{ item: '第六题答案1' }, { item: '第六题答案2' }, { item: '第六题答案3' }, { item: '第六题答案4' }] }] });
-    this.init();
+    this.setData({ exampaperId: options.exampaperId });
   },
 
   /**
    * 初始化数据
    */
   init: function () {
-    // wx.request({
-    //   url: '',
-    //   header: {
-    //     'content-type': 'application/json'
-    //   },
-    //   success: function (res) {
-    //     if (1 == res.result) {
-
-    //       that.setData({questionList: res.list});
-    //     } else {
-
-    //     }
-    //   }
-    // });
+    wx.request({
+      url: 'http://localhost:8080/wx/exampaper/getExamQuestions?exampaperId=' + that.data.exampaperId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          that.setData({ questionList: result.data.list });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   //手指触摸动作开始 记录起点X坐标
@@ -134,73 +82,33 @@ Page({
       title: '提示',
       content: '确认要删除试题信息么？',
       success: function (res) {
-        console.log(el.currentTarget.dataset.id);
-        // wx.request({
-        //   url: '',
-        //   data: subData,
-        //   method: 'POST',
-        //   header: {
-        //     'content-type': 'application/x-www-form-urlencoded'
-        //   },
-        //   success: function (res) {
-        //     if (1 == res.result) {
-
-        //       that.init();
-        //     } else {
-
-        //     }
-        //   }
-        // });
+        wx.request({
+          url: 'http://localhost:8080/wx/exampaper/delExamQuestion',
+          data: { examquestionId: el.currentTarget.dataset.id },
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success: function (res) {
+            var result = res.data;
+            if (1 == result.status) {
+              wx.showToast({
+                title: "试题删除成功！",
+                icon: 'success',
+                duration: 2000
+              });
+              that.init();
+            } else {
+              wx.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 1000
+              });
+            }
+          }
+        });
       }
     });
-  },
-
-  // 选项卡
-  filterTab: function (e) {
-    var data = [true, true, true], index = e.currentTarget.dataset.index;
-    data[index] = !this.data.tab[index];
-    this.setData({
-      tab: data
-    })
-  },
-
-  //筛选项点击操作
-  filter: function (e) {
-    var dataset = e.currentTarget.dataset;
-    var self = this, id = e.currentTarget.dataset.id, txt = dataset.txt, tabTxt = this.data.tabTxt;
-    switch (dataset.index) {
-      case '0':
-        tabTxt[0] = txt;
-        self.setData({
-          tab: [true, true, true],
-          tabTxt: tabTxt,
-          subject_id: id
-        });
-        break;
-      case '1':
-        tabTxt[1] = txt;
-        self.setData({
-          tab: [true, true, true],
-          tabTxt: tabTxt,
-          chapter_id: id
-        });
-        break;
-      case '2':
-        tabTxt[2] = txt;
-        self.setData({
-          tab: [true, true, true],
-          tabTxt: tabTxt,
-          xiaoliang_id: id,
-          xiaoliang_txt: txt
-        });
-        break;
-    }
-    //数据筛选
-    self.getDataList();
-  },
-
-  getDataList: function () {
-
   },
 
   //点击最外层列表展开收起
@@ -235,7 +143,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.init();
   },
 
   /**
@@ -263,7 +171,27 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    var page = this.data.currPage + 1;
+    var arr = this.data.subjectList;
+    wx.request({
+      url: 'http://localhost:8080/wx/exampaper/getExamQuestions?exampaperId=' + that.data.exampaperId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          arr = arr.concat(result.data.list);
+          that.setData({ questionList: arr, currPage: page });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   /**

@@ -36,6 +36,7 @@ page{
   line-height: 1.42857;
   flex: 1;
 }
+
 /* 共享右箭头设置*/
 .righthead:after{
 
