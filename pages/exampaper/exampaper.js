@@ -13,9 +13,9 @@ Page({
     modalStatusTxt: '',
     modalStatus: 0,
     id: 0,
-    sort: 0,
     name: '',
-    description: ''
+    currPage: 1,
+    pageSize: 10
   },
 
   /**
@@ -38,62 +38,73 @@ Page({
       return;
     }
     var subData = {
-      id: null,
-      name: this.data.name,
-      description: this.data.description,
-      sort: null
+      name: this.data.name
     }
     // 添加的情况
     if (1 == this.data.modalStatus) {
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function(res) {
-      //     if (1 == res.result) {
-
-      //       that.onLoad();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/exampaper/addExamPaper',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "试卷添加成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     } 
     // 更新的情况
     else if (2 == this.data.modalStatus) {
       subData.id = this.data.id;
-      subData.sort = this.data.sort;
-      // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.onLoad();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+      wx.request({
+        url: 'http://localhost:8080/wx/exampaper/updateExamPaper',
+        data: subData,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var result = res.data;
+          if (1 == result.status) {
+            wx.showToast({
+              title: "试卷更新成功！",
+              icon: 'success',
+              duration: 2000
+            });
+            that.init();
+            that.setData({
+              modalHidden: true
+            });
+          } else {
+            wx.showToast({
+              title: result.msg,
+              icon: 'none',
+              duration: 1000
+            });
+          }
+          that.cleanModal();
+        }
+      });
     }
-
-    wx.showToast({
-      title: '添加/更新成功',
-      icon: 'success',
-      duration: 2000
-    });
-
-    this.setData({
-      modalHidden: true
-    });
-    this.cleanModal();
   },
 
   /**
@@ -130,21 +141,31 @@ Page({
    */
   onLoad: function (options) {
     that = this;
-    this.setData({ exampaperList: [{ id: 1, name: "试卷一", sort: 1, description: '' }, { id: 2, name: "试卷二", sort: 2, description: '' }, { id: 3, name: "试卷三", sort: 3, description: '' }, { id: 4, name: "试卷四", sort: 4, description: '' }, { id: 5, name: "试卷五", sort: 5, description: '' }, { id: 6, name: "试卷六", sort: 6, description: '' }] });
-    // wx.request({
-    //   url: '',
-    //   header: {
-    //     'content-type': 'application/json'
-    //   },
-    //   success: function (res) {
-    //     if (1 == res.result) {
-          
-    //       that.setData({exampaperList: res.list});
-    //     } else {
+    that.init();
+  },
 
-    //     }
-    //   }
-    // });
+  /**
+   * 初始化页面
+   */
+  init: function() {
+    wx.request({
+      url: 'http://localhost:8080/wx/exampaper/getExamPapers?currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          that.setData({ exampaperList: result.data.list });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   //手指触摸动作开始 记录起点X坐标
@@ -181,22 +202,31 @@ Page({
       title: '提示',
       content: '确认要删除试卷信息么？',
       success: function (res) {
-        // wx.request({
-      //   url: '',
-      //   data: subData,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     if (1 == res.result) {
-
-      //       that.onLoad();
-      //     } else {
-
-      //     }
-      //   }
-      // });
+        wx.request({
+          url: 'http://localhost:8080/wx/exampaper/delExamPaper',
+          data: { examPaperId: el.currentTarget.dataset.id },
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success: function (res) {
+            var result = res.data;
+            if (1 == result.status) {
+              wx.showToast({
+                title: "试卷删除成功！",
+                icon: 'success',
+                duration: 2000
+              });
+              that.init();
+            } else {
+              wx.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 1000
+              });
+            }
+          }
+        });
       }
     }); 
   },
