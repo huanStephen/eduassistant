@@ -267,7 +267,27 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    var page = this.data.currPage + 1;
+    var arr = this.data.subjectList;
+    wx.request({
+      url: 'http://localhost:8080/wx/student/getStudents?classId=' + that.data.classId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          arr = arr.concat(result.data.list);
+          that.setData({ studentList: arr, currPage: page });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   /**
