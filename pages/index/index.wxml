@@ -37,7 +37,7 @@
   <view bindtap="bindQuestion" class="index-item">
     <view class="indexflex">
       <image class="index-item-img" src="/images/index_smile.png"/>
-      <text class="index-item-name">试 题</text>
+      <text class="index-item-name">题 库</text>
     </view>
   </view>
   <view bindtap="bindExamPaper" class="index-item">
