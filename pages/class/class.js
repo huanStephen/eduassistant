@@ -43,7 +43,7 @@ Page({
     // 添加的情况
     if (1 == this.data.modalStatus) {
       wx.request({
-        url: 'http://localhost:8080/wx/class/addClass',
+        url: 'https://www.infuturedu.com/wx/class/addClass',
         data: subData,
         method: 'POST',
         header: {
@@ -76,7 +76,7 @@ Page({
     else if (2 == this.data.modalStatus) {
       subData.id = this.data.id;
       wx.request({
-        url: 'http://localhost:8080/wx/class/updateClass',
+        url: 'https://www.infuturedu.com/wx/class/updateClass',
         data: subData,
         method: 'POST',
         header: {
@@ -153,7 +153,7 @@ Page({
 
   init: function() {
     wx.request({
-      url: 'http://localhost:8080/wx/class/getClasses?currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/class/getClasses?currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },
@@ -207,7 +207,7 @@ Page({
       content: '确认要删除班级信息么？',
       success: function (res) {
         wx.request({
-          url: 'http://localhost:8080/wx/class/delClass',
+          url: 'https://www.infuturedu.com/wx/class/delClass',
           data: { classId: el.currentTarget.dataset.id },
           method: 'POST',
           header: {
@@ -277,7 +277,7 @@ Page({
     var page = this.data.currPage + 1;
     var arr = this.data.subjectList;
     wx.request({
-      url: 'http://localhost:8080/wx/class/getClasses?currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/class/getClasses?currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },

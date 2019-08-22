@@ -38,7 +38,7 @@ Page({
    */
   init: function () {
     wx.request({
-      url: 'http://localhost:8080/wx/subject/getSubjects?currPage=1&pageSize=100',
+      url: 'https://www.infuturedu.com/wx/subject/getSubjects?currPage=1&pageSize=100',
       header: {
         'content-type': 'application/json'
       },
@@ -101,7 +101,7 @@ Page({
       })
     }
     wx.request({
-      url: 'http://localhost:8080/wx/exampaper/addExamQuestions',
+      url: 'https://www.infuturedu.com/wx/exampaper/addExamQuestions',
       data: JSON.stringify(list),
       method: 'POST',
       header: {
@@ -152,7 +152,7 @@ Page({
         tabTxt[1] = '章节';
         tabTxt[2] = '大纲';
         wx.request({
-          url: 'http://localhost:8080/wx/chapter/getChapters?subjectId=' + id + '&currPage=1&pageSize=100',
+          url: 'https://www.infuturedu.com/wx/chapter/getChapters?subjectId=' + id + '&currPage=1&pageSize=100',
           header: {
             'content-type': 'application/json'
           },
@@ -183,7 +183,7 @@ Page({
         tabTxt[1] = txt;
         tabTxt[2] = '大纲';
         wx.request({
-          url: 'http://localhost:8080/wx/outline/getOutlines?chapterId=' + id + '&currPage=1&pageSize=100',
+          url: 'https://www.infuturedu.com/wx/outline/getOutlines?chapterId=' + id + '&currPage=1&pageSize=100',
           header: {
             'content-type': 'application/json'
           },
@@ -223,7 +223,7 @@ Page({
   getDataList: function () {
     this.setData({ selectedQuestions: []});
     wx.request({
-      url: 'http://localhost:8080/wx/question/getChoiceQuestions?subjectId=' + that.data.subject_id + '&chapterId=' + that.data.chapter_id + '&outlineId=' + that.data.outline_id + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/question/getChoiceQuestions?subjectId=' + that.data.subject_id + '&chapterId=' + that.data.chapter_id + '&outlineId=' + that.data.outline_id + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },
@@ -315,7 +315,7 @@ Page({
     var page = this.data.currPage + 1;
     var arr = this.data.questionList;
     wx.request({
-      url: 'http://localhost:8080/wx/question/getChoiceQuestions?subjectId=' + that.data.subject_id + '&chapterId=' + that.data.chapter_id + '&outlineId=' + that.data.outline_id + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/question/getChoiceQuestions?subjectId=' + that.data.subject_id + '&chapterId=' + that.data.chapter_id + '&outlineId=' + that.data.outline_id + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },

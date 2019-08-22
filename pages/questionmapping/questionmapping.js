@@ -46,7 +46,7 @@ Page({
     // 添加的情况
     if (1 == this.data.modalStatus) {
       wx.request({
-        url: 'http://localhost:8080/wx/question/addChoiceQuestionMapping',
+        url: 'https://www.infuturedu.com/wx/question/addChoiceQuestionMapping',
         data: subData,
         method: 'POST',
         header: {
@@ -79,7 +79,7 @@ Page({
     else if (2 == this.data.modalStatus) {
       subData.id = this.data.id;
       wx.request({
-        url: 'http://localhost:8080/wx/question/updateChoiceQuestionMapping',
+        url: 'https://www.infuturedu.com/wx/question/updateChoiceQuestionMapping',
         data: subData,
         method: 'POST',
         header: {
@@ -148,7 +148,7 @@ Page({
       if (subjectElId == subjectList[i].id) {
         subjectIdx = i;
         wx.request({
-          url: 'http://localhost:8080/wx/chapter/getChapters?subjectId=' + subjectElId + '&currPage=1&pageSize=100',
+          url: 'https://www.infuturedu.com/wx/chapter/getChapters?subjectId=' + subjectElId + '&currPage=1&pageSize=100',
           header: {
             'content-type': 'application/json'
           },
@@ -170,7 +170,7 @@ Page({
               that.setData({ multiArray: multi, multiIndex: index});
               if (-1 != chapterIdx) {
                 wx.request({
-                  url: 'http://localhost:8080/wx/outline/getOutlines?chapterId=' + chapterElId + '&currPage=1&pageSize=100',
+                  url: 'https://www.infuturedu.com/wx/outline/getOutlines?chapterId=' + chapterElId + '&currPage=1&pageSize=100',
                   header: {
                     'content-type': 'application/json'
                   },
@@ -231,7 +231,7 @@ Page({
    */
   initQuestion: function() {
     wx.request({
-      url: 'http://localhost:8080/wx/question/getChoiceQuestion?questionId=' + that.data.questionId,
+      url: 'https://www.infuturedu.com/wx/question/getChoiceQuestion?questionId=' + that.data.questionId,
       header: {
         'content-type': 'application/json'
       },
@@ -255,7 +255,7 @@ Page({
    */
   initMappings: function() {
     wx.request({
-      url: 'http://localhost:8080/wx/question/getChoiceQuestionMappings?questionId=' + that.data.questionId,
+      url: 'https://www.infuturedu.com/wx/question/getChoiceQuestionMappings?questionId=' + that.data.questionId,
       header: {
         'content-type': 'application/json'
       },
@@ -291,7 +291,7 @@ Page({
    */
   initPicker: function() {
     wx.request({
-      url: 'http://localhost:8080/wx/subject/getSubjects?currPage=1&pageSize=100',
+      url: 'https://www.infuturedu.com/wx/subject/getSubjects?currPage=1&pageSize=100',
       header: {
         'content-type': 'application/json'
       },
@@ -338,7 +338,7 @@ Page({
       content: '确认要删除映射信息么？',
       success: function (res) {
         wx.request({
-          url: 'http://localhost:8080/wx/question/delChoiceQuestionMapping',
+          url: 'https://www.infuturedu.com/wx/question/delChoiceQuestionMapping',
           data: { mappingId: el.currentTarget.dataset.id },
           method: 'POST',
           header: {
@@ -376,7 +376,7 @@ Page({
     switch (el.detail.column) {
       case 0:
         wx.request({
-          url: 'http://localhost:8080/wx/chapter/getChapters?subjectId=' + value + '&currPage=1&pageSize=100',
+          url: 'https://www.infuturedu.com/wx/chapter/getChapters?subjectId=' + value + '&currPage=1&pageSize=100',
           header: {
             'content-type': 'application/json'
           },
@@ -394,7 +394,7 @@ Page({
               that.setData({ multiArray: multi });
               if (0 != list.length) {
                 wx.request({
-                  url: 'http://localhost:8080/wx/outline/getOutlines?chapterId=' + list[0].id + '&currPage=1&pageSize=100',
+                  url: 'https://www.infuturedu.com/wx/outline/getOutlines?chapterId=' + list[0].id + '&currPage=1&pageSize=100',
                   header: {
                     'content-type': 'application/json'
                   },

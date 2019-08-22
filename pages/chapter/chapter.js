@@ -48,7 +48,7 @@ Page({
     // 添加的情况
     if (1 == this.data.modalStatus) {
       wx.request({
-        url: 'http://localhost:8080/wx/chapter/addChapter',
+        url: 'https://www.infuturedu.com/wx/chapter/addChapter',
         data: subData,
         method: 'POST',
         header: {
@@ -81,7 +81,7 @@ Page({
     else if (2 == this.data.modalStatus) {
       subData.id = this.data.id;
       wx.request({
-        url: 'http://localhost:8080/wx/chapter/updateChapter',
+        url: 'https://www.infuturedu.com/wx/chapter/updateChapter',
         data: subData,
         method: 'POST',
         header: {
@@ -156,7 +156,7 @@ Page({
    */
   init: function() {
     wx.request({
-      url: 'http://localhost:8080/wx/chapter/getChapters?subjectId=' + that.data.subjectId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/chapter/getChapters?subjectId=' + that.data.subjectId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },
@@ -207,7 +207,7 @@ Page({
       content: '确认要删除章节信息么？',
       success: function (res) {
         wx.request({
-          url: 'http://localhost:8080/wx/chapter/delChapter',
+          url: 'https://www.infuturedu.com/wx/chapter/delChapter',
           data: { chapterId: el.currentTarget.dataset.id },
           method: 'POST',
           header: {
@@ -277,7 +277,7 @@ Page({
     var page = this.data.currPage + 1;
     var arr = this.data.subjectList;
     wx.request({
-      url: 'http://localhost:8080/wx/chapter/getChapters?subjectId=' + that.data.subjectId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/chapter/getChapters?subjectId=' + that.data.subjectId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },
