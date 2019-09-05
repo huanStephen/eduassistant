@@ -1,12 +1,11 @@
 <!--pages/user/user.wxml-->
 <view class="container">
-
-  <view class="user-logo">
-    <image class="user-logo-img" src="/images/McDonaldLogo.png"></image>
+  <view class="userinfo">
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
   </view>
-<!-- bindtap="maixiangMembertap"  -->
 
-  <view catchtap="ifregister"   class="user-maixiangMember userstyle">
+  <view catchtap="ifregister" class="user-maixiangMember userstyle">
     <text class="userTextStyle">麦享会会员信息</text>
     <text class="righthead"></text>
   </view>

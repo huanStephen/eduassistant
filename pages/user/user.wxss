@@ -51,7 +51,6 @@ page{
 
 }
 
-
 .user-maixiangMember {
   border-width: 17rpx 0rpx 10rpx 0rpx;
   border-style: solid;
@@ -66,4 +65,28 @@ page{
   border-color: #EFEFF5;
   display: flex;
   align-items: center;
+}
+
+.userinfo{
+  position: relative;
+  width: 750rpx;
+  height: 320rpx;
+  background: #fff;
+  color: #4a4a4a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.userinfo-avatar {
+  display: block;
+  width: 160rpx;
+  height: 160rpx;
+  margin: 20rpx;
+  margin-top: 50rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #4a4a4a;
+  font-size: 28rpx;
 }
