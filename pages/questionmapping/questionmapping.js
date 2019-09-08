@@ -337,31 +337,33 @@ Page({
       title: '提示',
       content: '确认要删除映射信息么？',
       success: function (res) {
-        wx.request({
-          url: 'https://www.infuturedu.com/wx/question/delChoiceQuestionMapping',
-          data: { mappingId: el.currentTarget.dataset.id },
-          method: 'POST',
-          header: {
-            'content-type': 'application/x-www-form-urlencoded'
-          },
-          success: function (res) {
-            var result = res.data;
-            if (1 == result.status) {
-              wx.showToast({
-                title: "映射删除成功！",
-                icon: 'success',
-                duration: 2000
-              });
-              that.initMappings();
-            } else {
-              wx.showToast({
-                title: result.msg,
-                icon: 'none',
-                duration: 1000
-              });
+        if (res.confirm) {
+          wx.request({
+            url: 'https://www.infuturedu.com/wx/question/delChoiceQuestionMapping',
+            data: { mappingId: el.currentTarget.dataset.id },
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            success: function (res) {
+              var result = res.data;
+              if (1 == result.status) {
+                wx.showToast({
+                  title: "映射删除成功！",
+                  icon: 'success',
+                  duration: 2000
+                });
+                that.initMappings();
+              } else {
+                wx.showToast({
+                  title: result.msg,
+                  icon: 'none',
+                  duration: 1000
+                });
+              }
             }
-          }
-        });
+          });
+        }
       }
     }); 
   },

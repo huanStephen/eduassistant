@@ -206,31 +206,33 @@ Page({
       title: '提示',
       content: '确认要删除班级信息么？',
       success: function (res) {
-        wx.request({
-          url: 'https://www.infuturedu.com/wx/class/delClass',
-          data: { classId: el.currentTarget.dataset.id },
-          method: 'POST',
-          header: {
-            'content-type': 'application/x-www-form-urlencoded'
-          },
-          success: function (res) {
-            var result = res.data;
-            if (1 == result.status) {
-              wx.showToast({
-                title: "班级删除成功！",
-                icon: 'success',
-                duration: 2000
-              });
-              that.init();
-            } else {
-              wx.showToast({
-                title: result.msg,
-                icon: 'none',
-                duration: 1000
-              });
+        if (res.confirm) {
+          wx.request({
+            url: 'https://www.infuturedu.com/wx/class/delClass',
+            data: { classId: el.currentTarget.dataset.id },
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            success: function (res) {
+              var result = res.data;
+              if (1 == result.status) {
+                wx.showToast({
+                  title: "班级删除成功！",
+                  icon: 'success',
+                  duration: 2000
+                });
+                that.init();
+              } else {
+                wx.showToast({
+                  title: result.msg,
+                  icon: 'none',
+                  duration: 1000
+                });
+              }
             }
-          }
-        });
+          });
+        }
       }
     }); 
   },
