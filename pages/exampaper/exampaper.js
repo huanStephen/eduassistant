@@ -12,6 +12,9 @@ Page({
     modalHidden: true,
     modalStatusTxt: '',
     modalStatus: 0,
+    pickerArray: [],
+    pickerIndex: 0,
+    pickerMap: {},
     id: 0,
     name: '',
     currPage: 1,
@@ -22,7 +25,7 @@ Page({
    * 添加试卷
    */
   openAddWin: function() {
-    this.setData({ modalHidden: false, modalStatusTxt: '添加', modalStatus: 1});
+    this.setData({ modalHidden: false, modalStatusTxt: '添加', modalStatus: 1, pickerIndex: 0});
   },
   
   /**
@@ -38,7 +41,8 @@ Page({
       return;
     }
     var subData = {
-      name: this.data.name
+      name: this.data.name,
+      subjectId: that.data.pickerArray[that.data.pickerIndex].id
     }
     // 添加的情况
     if (1 == this.data.modalStatus) {
@@ -133,7 +137,7 @@ Page({
    * 更新试卷
    */
   openUpdateWin: function (el) {
-    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, sort: el.currentTarget.dataset.sort, name: el.currentTarget.dataset.name, description: el.currentTarget.dataset.description});
+    this.setData({ modalHidden: false, modalStatusTxt: '更新', modalStatus: 2, id: el.currentTarget.dataset.id, name: el.currentTarget.dataset.name, pickerIndex: that.data.pickerMap[el.currentTarget.dataset.subject]});
   },
 
   /**
@@ -142,6 +146,7 @@ Page({
   onLoad: function (options) {
     that = this;
     that.init();
+    that.initPicker();
   },
 
   /**
@@ -156,7 +161,7 @@ Page({
       success: function (res) {
         var result = res.data;
         if (1 == result.status) {
-          that.setData({ exampaperList: result.data.list });
+          that.setData({ exampaperList: result.data.list});
         } else {
           wx.showToast({
             title: result.msg,
@@ -229,6 +234,41 @@ Page({
         });
       }
     }); 
+  },
+
+  /**
+   * 初始化Picker
+   */
+  initPicker: function () {
+    wx.request({
+      url: 'https://www.infuturedu.com/wx/subject/getSubjects?currPage=1&pageSize=100',
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          var map = {};
+          var i = 0;
+          for (var idx in result.data.list) {
+            map[result.data.list[idx].id] = i;
+            i++;
+          }
+          that.setData({ pickerArray: result.data.list, pickerMap: map });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
+  },
+
+  bindPickerChange: function (el) {
+    var value = el.detail.value;
+    this.setData({ pickerIndex: value[0] });
   },
 
   /**
