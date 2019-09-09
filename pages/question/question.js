@@ -13,8 +13,6 @@ Page({
     subjectList: [],
     chapterList: [],
     outlineList: [],
-    modalHidden: true,
-    questionList: [],
     ifName: false,
     modalHidden: true,
     id: 0,
@@ -354,7 +352,7 @@ Page({
     var page = this.data.currPage + 1;
     var arr = this.data.questionList;
     wx.request({
-      url: 'https://www.infuturedu.com/wx/question/getChoiceQuestions?subjectId=' + that.data.subject_id + '&chapterId=' + that.data.chapter_id + '&outlineId=' + that.data.outline_id + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/question/getChoiceQuestions?subjectId=' + that.data.subject_id + '&chapterId=' + that.data.chapter_id + '&outlineId=' + that.data.outline_id + '&currPage=' + page + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },

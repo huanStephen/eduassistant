@@ -273,9 +273,9 @@ Page({
    */
   onReachBottom: function () {
     var page = this.data.currPage + 1;
-    var arr = this.data.subjectList;
+    var arr = this.data.outlineList;
     wx.request({
-      url: 'https://www.infuturedu.com/wx/outline/getOutlines?chapterId=' + that.data.chapterId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/outline/getOutlines?chapterId=' + that.data.chapterId + '&currPage=' + page + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },

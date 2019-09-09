@@ -313,9 +313,9 @@ Page({
    */
   onReachBottom: function () {
     var page = this.data.currPage + 1;
-    var arr = this.data.subjectList;
+    var arr = this.data.exampaperList;
     wx.request({
-      url: 'https://www.infuturedu.com/wx/exampaper/getExamPapers?currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/exampaper/getExamPapers?currPage=' + page + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },

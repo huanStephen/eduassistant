@@ -270,9 +270,9 @@ Page({
    */
   onReachBottom: function () {
     var page = this.data.currPage + 1;
-    var arr = this.data.subjectList;
+    var arr = this.data.studentList;
     wx.request({
-      url: 'https://www.infuturedu.com/wx/student/getStudents?classId=' + that.data.classId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/student/getStudents?classId=' + that.data.classId + '&currPage=' + page + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },

@@ -9,8 +9,6 @@ Page({
     answerTxt: ['A', 'B', 'C', 'D', 'E'],
     exampaperId: 0,
     questionList: [],
-    modalHidden: true,
-    questionList: [],
     ifName: false,
     modalHidden: true,
     id: 0,
@@ -82,31 +80,33 @@ Page({
       title: '提示',
       content: '确认要删除试题信息么？',
       success: function (res) {
-        wx.request({
-          url: 'https://www.infuturedu.com/wx/exampaper/delExamQuestion',
-          data: { examquestionId: el.currentTarget.dataset.id },
-          method: 'POST',
-          header: {
-            'content-type': 'application/x-www-form-urlencoded'
-          },
-          success: function (res) {
-            var result = res.data;
-            if (1 == result.status) {
-              wx.showToast({
-                title: "试题删除成功！",
-                icon: 'success',
-                duration: 2000
-              });
-              that.init();
-            } else {
-              wx.showToast({
-                title: result.msg,
-                icon: 'none',
-                duration: 1000
-              });
+        if (res.confirm) {
+          wx.request({
+            url: 'https://www.infuturedu.com/wx/exampaper/delExamQuestion',
+            data: { examquestionId: el.currentTarget.dataset.id },
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            success: function (res) {
+              var result = res.data;
+              if (1 == result.status) {
+                wx.showToast({
+                  title: "试题删除成功！",
+                  icon: 'success',
+                  duration: 2000
+                });
+                that.init();
+              } else {
+                wx.showToast({
+                  title: result.msg,
+                  icon: 'none',
+                  duration: 1000
+                });
+              }
             }
-          }
-        });
+          });
+        }
       }
     });
   },
@@ -171,10 +171,10 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    var page = this.data.currPage + 1;
-    var arr = this.data.subjectList;
+    var page = that.data.currPage + 1;
+    var arr = that.data.questionList;
     wx.request({
-      url: 'https://www.infuturedu.com/wx/exampaper/getExamQuestions?exampaperId=' + that.data.exampaperId + '&currPage=' + that.data.currPage + '&pageSize=' + that.data.pageSize,
+      url: 'https://www.infuturedu.com/wx/exampaper/getExamQuestions?exampaperId=' + that.data.exampaperId + '&currPage=' + page + '&pageSize=' + that.data.pageSize,
       header: {
         'content-type': 'application/json'
       },
