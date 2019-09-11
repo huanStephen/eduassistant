@@ -13,6 +13,8 @@ Page({
     mappingList: [],
     multiArray: [],//二维数组，长度是多少是几列
     multiIndex: [0, 0, 0],
+    subjectMap: {},
+    chapterMap: {},
     max: 10,
     weight: 0,
     ifName: false,
@@ -300,7 +302,13 @@ Page({
         if (1 == result.status) {
           var multi = [[{id: 0, name: '未分类'}], [], []];
           multi[0] = multi[0].concat(result.data.list);
-          that.setData({ multiArray: multi });
+          var i = 0;
+          var map = {};
+          for (var idx in multi[0]) {
+            map[i] = multi[0][idx].id;
+            i ++;
+          }
+          that.setData({ multiArray: multi, subjectMap: map });
         } else {
           wx.showToast({
             title: result.msg,
@@ -378,7 +386,7 @@ Page({
     switch (el.detail.column) {
       case 0:
         wx.request({
-          url: 'https://www.infuturedu.com/wx/chapter/getChapters?subjectId=' + value + '&currPage=1&pageSize=100',
+          url: 'https://www.infuturedu.com/wx/chapter/getChapters?subjectId=' + that.data.subjectMap[value] + '&currPage=1&pageSize=100',
           header: {
             'content-type': 'application/json'
           },
@@ -388,12 +396,14 @@ Page({
               var multi = that.data.multiArray;
               var chapters = new Array();
               var list = result.data.list;
+              var map = {};
               for (var i in list) {
                 chapters.push({id: list[i].id, name: list[i].title});
+                map[i] = list[i].id;
               }
               multi[1] = chapters;
               multi[2] = [];
-              that.setData({ multiArray: multi });
+              that.setData({ multiArray: multi, chapterMap: map});
               if (0 != list.length) {
                 wx.request({
                   url: 'https://www.infuturedu.com/wx/outline/getOutlines?chapterId=' + list[0].id + '&currPage=1&pageSize=100',
@@ -432,6 +442,33 @@ Page({
         });
         break;
       case 1:
+        if ('{}' != JSON.stringify(that.data.chapterMap)) {
+          wx.request({
+            url: 'https://www.infuturedu.com/wx/outline/getOutlines?chapterId=' + that.data.chapterMap[value] + '&currPage=1&pageSize=100',
+            header: {
+              'content-type': 'application/json'
+            },
+            success: function (res) {
+              var result = res.data;
+              if (1 == result.status) {
+                var multi = that.data.multiArray;
+                var outlines = new Array();
+                var list = result.data.list;
+                for (var i in list) {
+                  outlines.push({ id: list[i].id, name: list[i].title });
+                }
+                multi[2] = outlines;
+                that.setData({ multiArray: multi });
+              } else {
+                wx.showToast({
+                  title: result.msg,
+                  icon: 'none',
+                  duration: 1000
+                });
+              }
+            }
+          });
+        }
         break;
       default:
         break;
