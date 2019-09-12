@@ -1,0 +1,12 @@
+<view class="container">
+  <view>
+    <image src="{{img}}" catchTap="chooseImageTap" mode="aspectFit" class="img" />
+  </view>
+
+  <view>
+    <button class="btn" bindtap="chooseimage">扫试卷</button>
+  </view>
+  <view wx:if="{{!hidden}}">
+    <button class="btn">识别答题卡</button>
+  </view>
+</view>

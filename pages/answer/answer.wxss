@@ -1,0 +1,11 @@
+.btn {
+  margin: 50rpx;
+  background-color: #ffc324;
+  color: white;
+}
+ 
+.img {
+  margin-top: 30rpx;
+  width: 100%;
+  height: 480rpx;
+}

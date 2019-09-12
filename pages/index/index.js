@@ -44,6 +44,11 @@ Page({
       url: '../exampaper/exampaper'
     })
   },
+  bindAnswer: function() {
+    wx.navigateTo({
+      url: '../answer/answer'
+    })
+  },
 
   bindDemo: function() {
     wx.navigateTo({

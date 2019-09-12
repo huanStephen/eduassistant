@@ -46,16 +46,16 @@
       <text class="index-item-name">试 卷</text>
     </view>
   </view>
-  <view class="index-item">
+  <view bindtap="bindAnswer" class="index-item">
     <view class="indexflex">
-      <!-- <image class="index-item-img" src="/images/index_clown.png"/>
-      <text class="index-item-name">测 试</text> -->
+      <image class="index-item-img" src="/images/index_clown.png"/>
+      <text class="index-item-name">答 卷</text>
     </view>
   </view>
-  <view class="index-item">
+  <view bindtap="bindDemo" class="index-item">
      <view class="indexflex">
-       <!-- <image class="index-item-img" src="/images/index_gift.png"/>
-       <text class="index-item-name"></text> -->
+      <image class="index-item-img" src="/images/index_clown.png"/>
+      <text class="index-item-name">测 试</text>
      </view>
   </view>
 </view>
