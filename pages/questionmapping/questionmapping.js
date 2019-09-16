@@ -6,10 +6,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    answerTxt: ['A', 'B', 'C', 'D', 'E'],
+    answerPrefix: ['A', 'B', 'C', 'D', 'E'],
     questionId: 0,
     modalHidden: true,
     title: '',
+    answerMap: {},
+    answerIndex: 0,
     mappingList: [],
     multiArray: [],//二维数组，长度是多少是几列
     multiIndex: [0, 0, 0],
@@ -240,7 +242,21 @@ Page({
       success: function (res) {
         var result = res.data;
         if (1 == result.status) {
-          that.setData({ title: result.data.title, options: result.data.options});
+          var answer = [{ id: 0, name: '未选择'}];
+          var idx = 0;
+          var val = 0;
+          var txt = '未选择';
+          var map = {};
+          for (var i in result.data.options) {
+            answer.push({ id: result.data.options[i].id, name: that.data.answerPrefix[idx] + '. ' + result.data.options[i].answer})
+            map[result.data.options[i].id] = idx + 1;
+            if (result.data.answer == result.data.options[i].id) {
+              val = result.data.answer;
+              txt = that.data.answerPrefix[idx] + '. ' + result.data.options[i].answer;
+            }
+            idx ++;
+          }
+          that.setData({ title: result.data.title, options: result.data.options, answers: answer, answerIndex: map[val], answerTxt: txt, answerMap: map});
         } else {
           wx.showToast({
             title: result.msg,
@@ -250,6 +266,11 @@ Page({
         }
       }
     });
+  },
+
+  bindAnswerChange: function(el) {
+    var value = el.detail.value;
+    this.setData({ answerIndex: value[0] });
   },
 
   /**

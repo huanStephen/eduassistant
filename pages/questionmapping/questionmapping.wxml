@@ -15,11 +15,30 @@
       </view>
       <view wx:for='{{options}}' wx:for-item="option" wx:for-index="idx" wx:key='this'>
         <view class='list_item_name_box'>
-          <text class='list_item_name userTextStyle'>{{answerTxt[idx]}} . {{option.answer}}</text>
+          <text class='list_item_name userTextStyle'>{{answerPrefix[idx]}} . {{option.answer}}</text>
         </view>
       </view>
     </view>
     <view class="del" catchtap="del" data-id="{{item.id}}">删除</view>
+  </view>
+
+<view class='content'>
+  <view class='column user-commonProblem userstyle'>
+    <view class='row full_width'>
+      <text class="userTextStyle" style="font-size: 32rpx; font-weight: bold;">答案：</text>
+    </view>
+  </view>
+</view>
+<view style="margin-bottom: 10rpx;">
+    <view class='content'>
+      <view class='column user-commonProblem userstyle'>
+        <view class='row full_width'>
+          <picker mode="selector" bindchange="bindAnswerChange" value="{{answerIndex}}" range="{{answers}}" range-key="name">
+            <view class="userTextStyle">{{answers[answerIndex].name}}</view>
+          </picker>
+        </view>
+      </view>
+    </view>
   </view>
 
 <view class='content'>
