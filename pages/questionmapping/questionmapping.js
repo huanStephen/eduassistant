@@ -271,7 +271,7 @@ Page({
   bindAnswerChange: function(el) {
     var value = el.detail.value;
     wx.request({
-      url: 'http://localhost:8001/wx/question/updateQuestionAnswer',
+      url: 'https://www.infuturedu.com/wx/question/updateQuestionAnswer',
       data: { questionId: that.data.questionId, answer: that.data.answers[value[0]].id },
       method: 'POST',
       header: {
