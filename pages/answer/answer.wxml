@@ -3,10 +3,22 @@
     <image src="{{img}}" catchTap="chooseImageTap" mode="aspectFit" class="img" />
   </view>
 
+  <view style="margin-bottom: 10rpx;">
+    <view class='content'>
+      <view class='column user-commonProblem userstyle'>
+        <view class='row full_width'>
+          <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}" range-key="name">
+            <view class="userTextStyle">{{multiArray[0][multiIndex[0]].name}} - {{multiArray[1][multiIndex[1]].name}}</view>
+          </picker>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <view>
     <button class="btn" bindtap="chooseimage">扫试卷</button>
   </view>
   <view wx:if="{{!hidden}}">
-    <button class="btn">识别答题卡</button>
+    <button class="btn" bindtap="uploadAnswerSheet">识别答题卡</button>
   </view>
 </view>
