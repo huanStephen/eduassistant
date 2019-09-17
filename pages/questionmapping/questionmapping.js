@@ -246,7 +246,7 @@ Page({
           var idx = 0;
           var val = 0;
           var txt = '未选择';
-          var map = {};
+          var map = {0: 0};
           for (var i in result.data.options) {
             answer.push({ id: result.data.options[i].id, name: that.data.answerPrefix[idx] + '. ' + result.data.options[i].answer})
             map[result.data.options[i].id] = idx + 1;
@@ -270,7 +270,31 @@ Page({
 
   bindAnswerChange: function(el) {
     var value = el.detail.value;
-    this.setData({ answerIndex: value[0] });
+    wx.request({
+      url: 'http://localhost:8001/wx/question/updateQuestionAnswer',
+      data: { questionId: that.data.questionId, answer: that.data.answers[value[0]].id },
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          wx.showToast({
+            title: "答案修改成功！",
+            icon: 'success',
+            duration: 2000
+          });
+          that.setData({ answerIndex: value[0] });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   /**
