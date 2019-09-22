@@ -22,6 +22,7 @@
     "pages/questionmapping/questionmapping",
     "pages/studentdetail/studentdetail",
     "pages/answer/answer",
+    "pages/answerdetail/answerdetail",
     "pages/demo/demo"
   ],
   "window": {

@@ -1,0 +1,23 @@
+<button class="btn-box" type="button" bindtap="entryExamQuestionChoose">保存</button>
+<button class="btn-box" type="button" bindtap="entryExamQuestionChoose">放弃</button>
+
+<view class="container">
+  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" wx:for="{{questionList}}" wx:key="" data-id="{{item.id}}">
+    <view class='content'>
+      <view class='column user-commonProblem userstyle' catchtap="listTap" data-index="{{index}}">
+        <view class='row full_width'>
+          <text class="userTextStyle">{{index + 1}}、{{item.title}}</text>
+          <switch checked="true"/>
+        </view>
+      </view>
+      <view wx:if='{{item.show}}'>
+        <view wx:for='{{item.options}}' wx:for-item="option" wx:for-index="idx" wx:key='this'>
+          <view class='list_item_name_box'>
+            <text class='list_item_name userTextStyle'>{{answerTxt[idx]}} . {{option.answer}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>
