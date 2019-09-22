@@ -6,7 +6,10 @@ Page({
     multiArray: [],//二维数组，长度是多少是几列
     multiIndex: [0, 0],
     classMap: {},
-    studentMap: {}
+    studentMap: {},
+    exampapers: [],
+    exampaperIndex: 0,
+    exampaperMap: []
   },
   onLoad: function () {
     that = this;
@@ -47,6 +50,32 @@ Page({
         }
       }
     });
+
+    wx.request({
+      url: 'https://www.infuturedu.com/wx/exampaper/getExamPapers?currPage=1&pageSize=100',
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        var result = res.data;
+        if (1 == result.status) {
+          var exampaperList = new Array();
+          exampaperList.push({ id: 0, name: '未选择' });
+          var map = {};
+          for (var i in result.data.list) {
+            exampaperList.push({ id: result.data.list[i].id, name: result.data.list[i].name });
+            map[i] = result.data.list[i].id;
+          }
+          that.setData({ exampapers: exampaperList, exampaperMap: map });
+        } else {
+          wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1000
+          });
+        }
+      }
+    });
   },
 
   chooseWxImage: function (type) {
@@ -68,16 +97,25 @@ Page({
     var classId = that.data.multiArray[0][that.data.multiIndex[0]].id;
     var studentId = null;
     var student = that.data.multiArray[1][that.data.multiIndex[1]];
+    var exampaperId = that.data.exampapers[that.data.exampaperIndex].id;
     if (undefined != student) {
       studentId = student.id;
     }
-    if (null == studentId) {
+    if (0 == classId || null == studentId) {
       wx.showToast({
         title: '请选择学生！',
         icon: 'none',
         duration: 1000
       });
       return ;
+    }
+    if (0 == exampaperId) {
+      wx.showToast({
+        title: '请选择试卷！',
+        icon: 'none',
+        duration: 1000
+      });
+      return;
     }
     wx.showActionSheet({
       itemList: ['拍照', '从相册中选择'],
@@ -168,5 +206,10 @@ Page({
         }
       });
     }
+  },
+
+  bindExampaperChange: function (el) {
+    var value = el.detail.value;
+    that.setData({ exampaperIndex: value[0] });
   }
 })

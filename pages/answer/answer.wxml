@@ -15,6 +15,18 @@
     </view>
   </view>
 
+  <view style="margin-bottom: 10rpx;">
+    <view class='content'>
+      <view class='column user-commonProblem userstyle'>
+        <view class='row full_width'>
+          <picker mode="selector" bindchange="bindExampaperChange" value="{{exampaperIndex}}" range="{{exampapers}}" range-key="name">
+            <view class="userTextStyle">{{exampapers[exampaperIndex].name}}</view>
+          </picker>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <view>
     <button class="btn" bindtap="chooseimage">扫试卷</button>
   </view>
