@@ -9,7 +9,9 @@ Page({
     studentMap: {},
     exampapers: [],
     exampaperIndex: 0,
-    exampaperMap: []
+    exampaperMap: [],
+    isDown: false,
+    percent: 0
   },
   onLoad: function () {
     that = this;
@@ -143,11 +145,12 @@ Page({
       success: function (res) {
         var result = JSON.parse(res.data);
         if (1 == result.status) {
-          wx.showToast({
-            title: '答题卡解析完毕！',
-            icon: 'success',
-            duration: 2000
-          });
+          that.setData({isDown: true, percent: 100});
+          // wx.showToast({
+          //   title: '答题卡解析完毕！',
+          //   icon: 'success',
+          //   duration: 2000
+          // });
         } else {
           wx.showToast({
             title: result.msg,
@@ -211,5 +214,11 @@ Page({
   bindExampaperChange: function (el) {
     var value = el.detail.value;
     that.setData({ exampaperIndex: value[0] });
+  },
+
+  processComplete: function() {
+    wx.navigateTo({
+      url: '../answerdetail/answerdetail'
+    });
   }
 })

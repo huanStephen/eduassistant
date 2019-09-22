@@ -32,5 +32,8 @@
   </view>
   <view wx:if="{{!hidden}}">
     <button class="btn" bindtap="uploadAnswerSheet">识别答题卡</button>
+    <view wx:if="{{isDown}}">
+      <progress percent="{{percent}}" show-info active='{{isDown}}' border-radius="5" stroke-width="10" bindactiveend="processComplete" duration="8000"/>
+    </view>
   </view>
 </view>
