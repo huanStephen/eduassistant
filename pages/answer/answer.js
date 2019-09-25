@@ -138,7 +138,7 @@ Page({
 
   uploadAnswerSheet: function() {
     wx.uploadFile({
-      url: 'http://localhost:8001/wx/exampaper/uploadAnswerSheet',
+      url: 'https://www.infuturedu.com/wx/exampaper/uploadAnswerSheet',
       filePath: that.data.img,
       name: 'answersheet',
       formData: {
