@@ -11,7 +11,9 @@ Page({
     exampaperIndex: 0,
     exampaperMap: [],
     isDown: false,
-    percent: 0
+    percent: 0,
+    studentId: 0,
+    exampaperId: 0
   },
   onLoad: function () {
     that = this;
@@ -85,7 +87,6 @@ Page({
       sizeType: ['original', 'compressed'],
       sourceType: [type],
       success: function (res) {
-        console.log(res);
         that.setData({
           // tempFilePath可以作为img标签的src属性显示图片
           img: res.tempFilePaths[0],
@@ -119,6 +120,7 @@ Page({
       });
       return;
     }
+    that.setData({ studentId: studentId, exampaperId: exampaperId });
     wx.showActionSheet({
       itemList: ['拍照', '从相册中选择'],
       itemColor: "#a3a2a2",
@@ -136,9 +138,13 @@ Page({
 
   uploadAnswerSheet: function() {
     wx.uploadFile({
-      url: 'https://www.infuturedu.com/wx/exampaper/uploadAnswerSheet',
+      url: 'http://localhost:8001/wx/exampaper/uploadAnswerSheet',
       filePath: that.data.img,
       name: 'answersheet',
+      formData: {
+        studentId: that.data.studentId,
+        exampaperId: that.data.exampaperId
+      },
       header: {
         "Content-Type": "multipart/form-data"
       },
