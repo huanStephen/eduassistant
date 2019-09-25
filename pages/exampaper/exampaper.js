@@ -18,7 +18,7 @@ Page({
     id: 0,
     name: '',
     currPage: 1,
-    pageSize: 10
+    pageSize: 20
   },
 
   /**

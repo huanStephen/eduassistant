@@ -13,7 +13,7 @@ Page({
     modalHidden: true,
     id: 0,
     currPage: 1,
-    pageSize: 10
+    pageSize: 20
   },
 
   entryExamQuestionChoose: function() {

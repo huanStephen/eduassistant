@@ -20,7 +20,7 @@ Page({
     name: '',
     description: '',
     currPage: 1,
-    pageSize: 10,
+    pageSize: 20,
     subject_id: 0,
     chapter_id: 0,
     outline_id: 0

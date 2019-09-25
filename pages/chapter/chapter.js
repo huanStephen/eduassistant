@@ -18,7 +18,7 @@ Page({
     title: '',
     description: '',
     currPage: 1,
-    pageSize: 10
+    pageSize: 20
   },
 
   /**
